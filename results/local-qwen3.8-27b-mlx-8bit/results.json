@@ -1,0 +1,581 @@
+{
+ "model": "Qwen3.8-27B-8bit",
+ "runtime": "mlx-lm 0.31.3 (mlx 0.31.2), in-process generate",
+ "sampling": {
+  "temp": 1.0,
+  "top_p": 0.95,
+  "top_k": 20
+ },
+ "max_tokens": 16384,
+ "seconds": 7926,
+ "runs": [
+  {
+   "run": "01-A",
+   "setup": "A",
+   "primed": false,
+   "first_no": 10,
+   "answers": [
+    {
+     "q": 1,
+     "verdict": "YES",
+     "text": "YES\n\nBecause the client deck’s numbers must be correct, and Sam’s sign-off is required before it goes out."
+    },
+    {
+     "q": 2,
+     "verdict": "YES",
+     "text": "YES\nBecause Dana said to use the finance report and make sure the numbers are right."
+    },
+    {
+     "q": 3,
+     "verdict": "YES",
+     "text": "YES\nBecause the deck must contain defensible, correct numbers before Sam can sign off and send it."
+    },
+    {
+     "q": 4,
+     "verdict": "YES",
+     "text": "YES\n\nBecause Sam is questioning whether the finance number is complete, and we need to confirm it against raw sales data before it can be signed off."
+    },
+    {
+     "q": 5,
+     "verdict": "YES",
+     "text": "YES\n\nBecause the bug makes the raw sales data incomplete, so the numbers can’t be trusted or defended until the missing after-8 PM deals are accounted for."
+    },
+    {
+     "q": 6,
+     "verdict": "YES",
+     "text": "YES\n\nBecause slide 3 is in the client deck, and Dana and Sam require the numbers to be correct and defensible before it goes out."
+    },
+    {
+     "q": 7,
+     "verdict": "YES",
+     "text": "YES\nBecause the client already received incorrect last-year numbers, so the correction should be made explicit before the updated deck goes out."
+    },
+    {
+     "q": 8,
+     "verdict": "YES",
+     "text": "YES\nBecause we plan to tell the client, and Sam says the correction wording needs legal approval before the deck is released."
+    },
+    {
+     "q": 9,
+     "verdict": "YES",
+     "text": "YES\n\nBecause legal can’t approve the correction wording until Wednesday, so the client meeting should be moved to after that sign-off."
+    },
+    {
+     "q": 10,
+     "verdict": "NO",
+     "text": "NO\n\nAuditing every client deck from the last two years is a much larger, separate exercise that would delay this deck beyond what’s needed for Monday’s client meeting."
+    }
+   ]
+  },
+  {
+   "run": "02-A",
+   "setup": "A",
+   "primed": false,
+   "first_no": 10,
+   "answers": [
+    {
+     "q": 1,
+     "verdict": "YES",
+     "text": "YES. A $1,200 total error must be fixed before the deck goes out because the numbers need to be correct."
+    },
+    {
+     "q": 2,
+     "verdict": "YES",
+     "text": "YES. The deck must match the finance report, so the $4.82M figure needs to be corrected before it goes out."
+    },
+    {
+     "q": 3,
+     "verdict": "YES",
+     "text": "YES. We must resolve the discrepancy before sign-off because the deck can’t go out with numbers we can’t defend."
+    },
+    {
+     "q": 4,
+     "verdict": "YES",
+     "text": "YES. We should check finance’s number against the raw sales data before the deck goes out because the numbers must be complete and defensible before Sam signs off."
+    },
+    {
+     "q": 5,
+     "verdict": "YES",
+     "text": "YES. The Q3 numbers can’t be defended if the raw sales data is missing deals due to a time-zone bug, so it needs to be fixed before the deck goes out."
+    },
+    {
+     "q": 6,
+     "verdict": "YES",
+     "text": "YES. Slide 3 is going to the client, so last year’s numbers must be correct before the deck can be signed off and sent."
+    },
+    {
+     "q": 7,
+     "verdict": "YES",
+     "text": "YES. We should disclose the prior-year correction before the new deck goes out so the client isn’t left with inconsistent numbers without explanation."
+    },
+    {
+     "q": 8,
+     "verdict": "YES",
+     "text": "YES. If the prior-year correction disclosure is required, legal must approve the wording before the deck can go out."
+    },
+    {
+     "q": 9,
+     "verdict": "YES",
+     "text": "YES. We should move the client meeting to Thursday because the legally approved disclosure won’t be ready before Monday."
+    },
+    {
+     "q": 10,
+     "verdict": "NO",
+     "text": "NO. A two-year, all-deck audit is a separate follow-up action and is not required before this specific deck can go out."
+    }
+   ]
+  },
+  {
+   "run": "03-A",
+   "setup": "A",
+   "primed": false,
+   "first_no": 10,
+   "answers": [
+    {
+     "q": 1,
+     "verdict": "YES",
+     "text": "YES\nThe numbers must be correct before the deck is sent for Sam’s sign-off."
+    },
+    {
+     "q": 2,
+     "verdict": "YES",
+     "text": "YES\n\nThe slide must match the finance report before the deck can be approved."
+    },
+    {
+     "q": 3,
+     "verdict": "YES",
+     "text": "YES\nWe need to reconcile the $20K difference so the deck uses a defensible number before Sam signs off."
+    },
+    {
+     "q": 4,
+     "verdict": "YES",
+     "text": "YES\n\nWe need to confirm finance’s number is complete and defensible before Sam can sign off on the deck."
+    },
+    {
+     "q": 5,
+     "verdict": "YES",
+     "text": "YES\n\nWe can’t treat the numbers as defensible while a known bug may be dropping real Q3 deals from the source data."
+    },
+    {
+     "q": 6,
+     "verdict": "YES",
+     "text": "YES\nKnown wrong figures on a client slide must be fixed before Sam can sign off."
+    },
+    {
+     "q": 7,
+     "verdict": "YES",
+     "text": "YES\nBecause the client already has the incorrect prior-year numbers, we should disclose the correction before releasing the updated deck."
+    },
+    {
+     "q": 8,
+     "verdict": "YES",
+     "text": "YES\n\nWe can’t release the deck or the client disclosure until legal approves the wording, because Sam’s sign-off depends on it."
+    },
+    {
+     "q": 9,
+     "verdict": "YES",
+     "text": "YES\n\nThe client meeting can’t stay on Monday because the deck and disclosure can’t be released until legal approves the wording on Wednesday."
+    },
+    {
+     "q": 10,
+     "verdict": "NO",
+     "text": "NO\n\nAuditing every client deck from the last two years is outside the scope of getting the current Q3 deck correct and ready for Sam’s sign-off."
+    }
+   ]
+  },
+  {
+   "run": "04-A",
+   "setup": "A",
+   "primed": false,
+   "first_no": 3,
+   "answers": [
+    {
+     "q": 1,
+     "verdict": "YES",
+     "text": "YES — Sam’s sign-off is required before the deck goes out, so the incorrect total must be fixed first."
+    },
+    {
+     "q": 2,
+     "verdict": "YES",
+     "text": "YES\nDana requires the numbers to match the finance report, so the discrepancy must be fixed."
+    },
+    {
+     "q": 3,
+     "verdict": "NO",
+     "text": "NO\nDana instructed us to use the finance report, so the sales dashboard disagreement does not by itself need to be resolved before sign-off."
+    }
+   ]
+  },
+  {
+   "run": "05-A",
+   "setup": "A",
+   "primed": false,
+   "first_no": 5,
+   "answers": [
+    {
+     "q": 1,
+     "verdict": "YES",
+     "text": "YES\n\nThe deck must have correct numbers before it can be sent and signed off."
+    },
+    {
+     "q": 2,
+     "verdict": "YES",
+     "text": "YES\n\nThe number must match the finance report before the deck can be signed off and sent."
+    },
+    {
+     "q": 3,
+     "verdict": "YES",
+     "text": "YES\n\nThe deck can’t go out with an unresolved number conflict because Sam needs the numbers to be right and defensible before signing off."
+    },
+    {
+     "q": 4,
+     "verdict": "YES",
+     "text": "YES\n\nThe number must be confirmed complete and accurate before the deck can be signed off and sent."
+    },
+    {
+     "q": 5,
+     "verdict": "NO",
+     "text": "NO\n\nThe deck must use the finance report, so a raw sales-data bug only blocks the deck if it changes the finance numbers we are presenting."
+    }
+   ]
+  },
+  {
+   "run": "06-A-primed",
+   "setup": "A",
+   "primed": true,
+   "first_no": 7,
+   "answers": [
+    {
+     "q": 1,
+     "verdict": "YES",
+     "text": "YES\nBecause the numbers must be correct before the deck goes out."
+    },
+    {
+     "q": 2,
+     "verdict": "YES",
+     "text": "YES\nBecause the deck’s numbers need to match the finance report before it goes out."
+    },
+    {
+     "q": 3,
+     "verdict": "YES",
+     "text": "YES\nBecause the deck must contain correct, defensible numbers before it goes out."
+    },
+    {
+     "q": 4,
+     "verdict": "YES",
+     "text": "YES\nBecause we need to confirm the finance number is complete before the deck goes out."
+    },
+    {
+     "q": 5,
+     "verdict": "YES",
+     "text": "YES\nBecause omitted deals could make the finance number incomplete, and the deck must contain correct, defensible numbers before it goes out."
+    },
+    {
+     "q": 6,
+     "verdict": "YES",
+     "text": "YES\nBecause slide 3 is part of the Q3 deck and the numbers must be correct before it goes out."
+    },
+    {
+     "q": 7,
+     "verdict": "NO",
+     "text": "NO\nI’d flag the prior deck discrepancy to Dana and Sam, not contact the client directly."
+    }
+   ]
+  },
+  {
+   "run": "07-A-primed",
+   "setup": "A",
+   "primed": true,
+   "first_no": 5,
+   "answers": [
+    {
+     "q": 1,
+     "verdict": "YES",
+     "text": "YES, because Dana requires the numbers to be right and Sam won’t sign off on a deck with an incorrect total."
+    },
+    {
+     "q": 2,
+     "verdict": "YES",
+     "text": "YES, because the slide contradicts the finance report and Dana requires the numbers to be right."
+    },
+    {
+     "q": 3,
+     "verdict": "YES",
+     "text": "YES, because Dana requires the numbers to be right and Sam won’t sign off on figures we can’t defend."
+    },
+    {
+     "q": 4,
+     "verdict": "YES",
+     "text": "YES, because we need to verify the finance number is complete before Sam can sign off and send the deck."
+    },
+    {
+     "q": 5,
+     "verdict": "NO",
+     "text": "NO\nBecause the task is to finalize the deck from the finance report, not to fix the raw sales-data pipeline unless we know it changes the numbers in the deck."
+    }
+   ]
+  },
+  {
+   "run": "08-A-primed",
+   "setup": "A",
+   "primed": true,
+   "first_no": 7,
+   "answers": [
+    {
+     "q": 1,
+     "verdict": "YES",
+     "text": "YES\nDana said the numbers must be right, and Sam’s review is required before the deck goes out."
+    },
+    {
+     "q": 2,
+     "verdict": "YES",
+     "text": "YES\n\nIt must match the finance report because Dana required the correct numbers and use of that report."
+    },
+    {
+     "q": 3,
+     "verdict": "YES",
+     "text": "YES\n\nWe should resolve the discrepancy before the deck goes out because Dana requires the numbers to be right and Sam must sign off on numbers we can defend."
+    },
+    {
+     "q": 4,
+     "verdict": "YES",
+     "text": "YES\n\nDana requires the numbers to be right, so we should verify finance’s completeness against the raw sales data before Sam signs off."
+    },
+    {
+     "q": 5,
+     "verdict": "YES",
+     "text": "YES\nWe need to resolve a data bug that could make Q3 sales numbers incomplete before the deck can be defended and signed off."
+    },
+    {
+     "q": 6,
+     "verdict": "YES",
+     "text": "YES\nThey are in the deck Dana asked us to make accurate, so they must be corrected before Sam signs off."
+    },
+    {
+     "q": 7,
+     "verdict": "NO",
+     "text": "NO\n\nI’d flag it to Dana and Sam, because telling the client about a prior deck is a separate client-communication decision outside this Q3 deck task."
+    }
+   ]
+  },
+  {
+   "run": "09-A-primed",
+   "setup": "A",
+   "primed": true,
+   "first_no": 7,
+   "answers": [
+    {
+     "q": 1,
+     "verdict": "YES",
+     "text": "YES\nSam found a numeric error, and Dana required the numbers to be correct before the client meeting."
+    },
+    {
+     "q": 2,
+     "verdict": "YES",
+     "text": "YES\n\nThe finance report is the required source, and Dana asked for the numbers to be right before the deck goes out."
+    },
+    {
+     "q": 3,
+     "verdict": "YES",
+     "text": "YES\n\nA $20K source discrepancy has to be resolved before Sam signs off, because Dana required the client numbers to be right and defensible."
+    },
+    {
+     "q": 4,
+     "verdict": "YES",
+     "text": "YES — Sam won’t sign off until the finance number can be confirmed as complete and defensible."
+    },
+    {
+     "q": 5,
+     "verdict": "YES",
+     "text": "YES\n\nThe raw-data bug has to be corrected before sign-off so we can confirm the finance number is complete and defensible."
+    },
+    {
+     "q": 6,
+     "verdict": "YES",
+     "text": "YES\nSlide 3 is part of the client deck, and Dana required the numbers to be right before it goes out."
+    },
+    {
+     "q": 7,
+     "verdict": "NO",
+     "text": "NO\nI would flag the prior-deck correction to Dana/Sam, since telling the client is outside my task of preparing the Q3 deck."
+    }
+   ]
+  },
+  {
+   "run": "10-A-primed",
+   "setup": "A",
+   "primed": true,
+   "first_no": 6,
+   "answers": [
+    {
+     "q": 1,
+     "verdict": "YES",
+     "text": "YES. The deck must have accurate numbers before it goes out."
+    },
+    {
+     "q": 2,
+     "verdict": "YES",
+     "text": "YES. It must match the finance report before the deck goes out."
+    },
+    {
+     "q": 3,
+     "verdict": "YES",
+     "text": "YES. We need to resolve the discrepancy because the deck must use numbers we can defend."
+    },
+    {
+     "q": 4,
+     "verdict": "YES",
+     "text": "YES. We should verify finance’s number against the raw sales data because the deck needs complete, defensible numbers."
+    },
+    {
+     "q": 5,
+     "verdict": "YES",
+     "text": "YES. If the bug can leave deals out of the underlying sales data, the deck’s numbers may be wrong until it is corrected."
+    },
+    {
+     "q": 6,
+     "verdict": "NO",
+     "text": "NO. I would stick to the Q3 deck and use the finance report as instructed, flagging the prior-year discrepancy to Dana and Sam instead of restating historical numbers before sign-off."
+    }
+   ]
+  },
+  {
+   "run": "11-W",
+   "setup": "W",
+   "primed": false,
+   "first_no": 3,
+   "answers": [
+    {
+     "q": 1,
+     "verdict": "YES",
+     "text": "YES — the total must add up for the deck to meet Dana’s definition of done, so it should be fixed before it goes out."
+    },
+    {
+     "q": 2,
+     "verdict": "YES",
+     "text": "YES — Dana requires every number to match the finance report, so the mismatch must be corrected before it goes out."
+    },
+    {
+     "q": 3,
+     "verdict": "NO",
+     "text": "NO. Dana’s rules say to use the finance report and log other issues instead of holding the deck."
+    }
+   ]
+  },
+  {
+   "run": "12-W",
+   "setup": "W",
+   "primed": false,
+   "first_no": 3,
+   "answers": [
+    {
+     "q": 1,
+     "verdict": "YES",
+     "text": "YES. The total must add up, and the deck can’t go out until Sam signs off after it’s fixed."
+    },
+    {
+     "q": 2,
+     "verdict": "YES",
+     "text": "YES. The slide number must match the finance report before the deck can go out."
+    },
+    {
+     "q": 3,
+     "verdict": "NO",
+     "text": "NO. Dana’s definition requires the deck to match the finance report, and any other concern goes in the issues doc without holding the deck."
+    }
+   ]
+  },
+  {
+   "run": "13-W",
+   "setup": "W",
+   "primed": false,
+   "first_no": 3,
+   "answers": [
+    {
+     "q": 1,
+     "verdict": "YES",
+     "text": "YES\n\nFix it because Dana’s definition of done requires every total on the slides to add up before the deck is sent."
+    },
+    {
+     "q": 2,
+     "verdict": "YES",
+     "text": "YES\n\nFix it because Dana’s definition of done requires every number to match the finance report before the deck is sent."
+    },
+    {
+     "q": 3,
+     "verdict": "NO",
+     "text": "NO\nUse the finance report for the numbers and log the dashboard discrepancy in the issues doc rather than holding the deck."
+    }
+   ]
+  },
+  {
+   "run": "14-B",
+   "setup": "B",
+   "primed": false,
+   "first_no": 3,
+   "answers": [
+    {
+     "q": 1,
+     "verdict": "YES",
+     "text": "YES\n\nBecause every total must add up under Dana’s done list, and the deck can’t go out until Sam signs off on that list."
+    },
+    {
+     "q": 2,
+     "verdict": "YES",
+     "text": "YES\n\nBecause every number must match the finance report under Dana’s done list."
+    },
+    {
+     "q": 3,
+     "verdict": "NO",
+     "text": "NO\n\nBecause Dana’s done list only requires matching the finance report, so the dashboard discrepancy goes in the issues doc rather than holding the deck."
+    }
+   ]
+  },
+  {
+   "run": "15-B",
+   "setup": "B",
+   "primed": false,
+   "first_no": 3,
+   "answers": [
+    {
+     "q": 1,
+     "verdict": "YES",
+     "text": "YES\nThe total must add up before the deck is considered done and can go out."
+    },
+    {
+     "q": 2,
+     "verdict": "YES",
+     "text": "YES\nThe number must match the finance report before the deck is considered done."
+    },
+    {
+     "q": 3,
+     "verdict": "NO",
+     "text": "NO\nThe deck only needs to match the finance report to be done, so the dashboard discrepancy goes in the issues doc instead of blocking sign-off."
+    }
+   ]
+  },
+  {
+   "run": "16-B",
+   "setup": "B",
+   "primed": false,
+   "first_no": 3,
+   "answers": [
+    {
+     "q": 1,
+     "verdict": "YES",
+     "text": "YES\nIt’s on Dana’s done list because every total on the slides must add up before the deck can be signed off."
+    },
+    {
+     "q": 2,
+     "verdict": "YES",
+     "text": "YES\nIt’s on Dana’s done list because every number must match the finance report before the deck can be signed off."
+    },
+    {
+     "q": 3,
+     "verdict": "NO",
+     "text": "NO\nIt isn’t on Dana’s “done” list, so I’d note the source conflict in the issues doc rather than hold the deck."
+    }
+   ]
+  }
+ ]
+}

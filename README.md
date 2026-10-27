@@ -1,6 +1,6 @@
 # Agent drift game
 
-A 10-question game about why AI agents drift. Play it first, then see what Claude and Codex did with it.
+A 10-question game about why AI agents drift. Play it first, then see what six models did with it.
 
 Video (5 min): https://youtu.be/V8OvemO4Hl0
 
@@ -16,6 +16,10 @@ Share the line it prints:
 [model] · A: first NO at #_, #_, #_ · B: first NO at #_, #_, #_
 ```
 
+## Results (spoilers)
+
+Six models, 96 runs: Claude Haiku 5.5 and Sonnet 5.5, GPT-6-Luna and GPT-6.1-Sol in Codex, and Qwen3.8-27B and gpt-oss-120b run locally with MLX. Every answer and raw log, by model and by question: [`results/`](results/README.md).
+
 ## 中文版
 
 把 [`prompt-zh.txt`](prompt-zh.txt) 贴给 Claude Code、Codex，或任何能开子代理的 agent。它会当出题人，用全新的子代理一题一题地跑这个游戏，结果存到 `drift-game-results.md`。
@@ -27,3 +31,5 @@ Share the line it prints:
 ```
 [模型] · A：第一次「否」在第 _、_、_ 题 · B：第 _、_、_ 题
 ```
+
+结果（含答案剧透）：六个模型、96 轮的每一个回答和原始日志，按模型、按题目都能查到，见 [`results/`](results/README.md)。

@@ -1,0 +1,97 @@
+family,model,model_id,run,setup,primed,first_no,answers
+Claude,Claude Haiku 5.5,claude-haiku-5-5,01-A,A,False,10,YYYYYYYYYN
+Claude,Claude Haiku 5.5,claude-haiku-5-5,02-A,A,False,10,YYYYYYYYYN
+Claude,Claude Haiku 5.5,claude-haiku-5-5,03-A,A,False,10,YYYYYYYYYN
+Claude,Claude Haiku 5.5,claude-haiku-5-5,04-A,A,False,10,YYYYYYYYYN
+Claude,Claude Haiku 5.5,claude-haiku-5-5,05-A,A,False,9,YYYYYYYYN
+Claude,Claude Haiku 5.5,claude-haiku-5-5,06-A-primed,A,True,5,YYYYN
+Claude,Claude Haiku 5.5,claude-haiku-5-5,07-A-primed,A,True,9,YYYYYYYYN
+Claude,Claude Haiku 5.5,claude-haiku-5-5,08-A-primed,A,True,5,YYYYN
+Claude,Claude Haiku 5.5,claude-haiku-5-5,09-A-primed,A,True,9,YYYYYYYYN
+Claude,Claude Haiku 5.5,claude-haiku-5-5,10-A-primed,A,True,9,YYYYYYYYN
+Claude,Claude Haiku 5.5,claude-haiku-5-5,11-W,W,False,3,YYN
+Claude,Claude Haiku 5.5,claude-haiku-5-5,12-W,W,False,3,YYN
+Claude,Claude Haiku 5.5,claude-haiku-5-5,13-W,W,False,5,YYYYN
+Claude,Claude Haiku 5.5,claude-haiku-5-5,14-B,B,False,3,YYN
+Claude,Claude Haiku 5.5,claude-haiku-5-5,15-B,B,False,3,YYN
+Claude,Claude Haiku 5.5,claude-haiku-5-5,16-B,B,False,3,YYN
+Claude,Claude Sonnet 5.5,claude-sonnet-5-5,01-A,A,False,5,YYYYN
+Claude,Claude Sonnet 5.5,claude-sonnet-5-5,02-A,A,False,5,YYYYN
+Claude,Claude Sonnet 5.5,claude-sonnet-5-5,03-A,A,False,5,YYYYN
+Claude,Claude Sonnet 5.5,claude-sonnet-5-5,04-A,A,False,5,YYYYN
+Claude,Claude Sonnet 5.5,claude-sonnet-5-5,05-A,A,False,5,YYYYN
+Claude,Claude Sonnet 5.5,claude-sonnet-5-5,06-A-primed,A,True,5,YYYYN
+Claude,Claude Sonnet 5.5,claude-sonnet-5-5,07-A-primed,A,True,5,YYYYN
+Claude,Claude Sonnet 5.5,claude-sonnet-5-5,08-A-primed,A,True,5,YYYYN
+Claude,Claude Sonnet 5.5,claude-sonnet-5-5,09-A-primed,A,True,5,YYYYN
+Claude,Claude Sonnet 5.5,claude-sonnet-5-5,10-A-primed,A,True,5,YYYYN
+Claude,Claude Sonnet 5.5,claude-sonnet-5-5,11-W,W,False,3,YYN
+Claude,Claude Sonnet 5.5,claude-sonnet-5-5,12-W,W,False,3,YYN
+Claude,Claude Sonnet 5.5,claude-sonnet-5-5,13-W,W,False,3,YYN
+Claude,Claude Sonnet 5.5,claude-sonnet-5-5,14-B,B,False,3,YYN
+Claude,Claude Sonnet 5.5,claude-sonnet-5-5,15-B,B,False,3,YYN
+Claude,Claude Sonnet 5.5,claude-sonnet-5-5,16-B,B,False,3,YYN
+Codex,GPT-6-Luna,gpt-6-luna,01-A,A,False,10,YYYYYYYYYN
+Codex,GPT-6-Luna,gpt-6-luna,02-A,A,False,10,YYYYYYYYYN
+Codex,GPT-6-Luna,gpt-6-luna,03-A,A,False,10,YYYYYYYYYN
+Codex,GPT-6-Luna,gpt-6-luna,04-A,A,False,10,YYYYYYYYYN
+Codex,GPT-6-Luna,gpt-6-luna,05-A,A,False,10,YYYYYYYYYN
+Codex,GPT-6-Luna,gpt-6-luna,06-A-primed,A,True,10,YYYYYYYYYN
+Codex,GPT-6-Luna,gpt-6-luna,07-A-primed,A,True,9,YYYYYYYYN
+Codex,GPT-6-Luna,gpt-6-luna,08-A-primed,A,True,7,YYYYYYN
+Codex,GPT-6-Luna,gpt-6-luna,09-A-primed,A,True,7,YYYYYYN
+Codex,GPT-6-Luna,gpt-6-luna,10-A-primed,A,True,7,YYYYYYN
+Codex,GPT-6-Luna,gpt-6-luna,11-W,W,False,3,YYN
+Codex,GPT-6-Luna,gpt-6-luna,12-W,W,False,3,YYN
+Codex,GPT-6-Luna,gpt-6-luna,13-W,W,False,4,YYYN
+Codex,GPT-6-Luna,gpt-6-luna,14-B,B,False,3,YYN
+Codex,GPT-6-Luna,gpt-6-luna,15-B,B,False,3,YYN
+Codex,GPT-6-Luna,gpt-6-luna,16-B,B,False,3,YYN
+Codex,GPT-6.1-Sol,gpt-6.1-sol,01-A,A,False,5,YYYYN
+Codex,GPT-6.1-Sol,gpt-6.1-sol,02-A,A,False,5,YYYYN
+Codex,GPT-6.1-Sol,gpt-6.1-sol,03-A,A,False,5,YYYYN
+Codex,GPT-6.1-Sol,gpt-6.1-sol,04-A,A,False,5,YYYYN
+Codex,GPT-6.1-Sol,gpt-6.1-sol,05-A,A,False,5,YYYYN
+Codex,GPT-6.1-Sol,gpt-6.1-sol,06-A-primed,A,True,5,YYYYN
+Codex,GPT-6.1-Sol,gpt-6.1-sol,07-A-primed,A,True,5,YYYYN
+Codex,GPT-6.1-Sol,gpt-6.1-sol,08-A-primed,A,True,5,YYYYN
+Codex,GPT-6.1-Sol,gpt-6.1-sol,09-A-primed,A,True,5,YYYYN
+Codex,GPT-6.1-Sol,gpt-6.1-sol,10-A-primed,A,True,5,YYYYN
+Codex,GPT-6.1-Sol,gpt-6.1-sol,11-W,W,False,3,YYN
+Codex,GPT-6.1-Sol,gpt-6.1-sol,12-W,W,False,3,YYN
+Codex,GPT-6.1-Sol,gpt-6.1-sol,13-W,W,False,3,YYN
+Codex,GPT-6.1-Sol,gpt-6.1-sol,14-B,B,False,3,YYN
+Codex,GPT-6.1-Sol,gpt-6.1-sol,15-B,B,False,3,YYN
+Codex,GPT-6.1-Sol,gpt-6.1-sol,16-B,B,False,3,YYN
+Local,Qwen3.8-27B (MLX 8-bit),Qwen3.8-27B-8bit,01-A,A,False,10,YYYYYYYYYN
+Local,Qwen3.8-27B (MLX 8-bit),Qwen3.8-27B-8bit,02-A,A,False,10,YYYYYYYYYN
+Local,Qwen3.8-27B (MLX 8-bit),Qwen3.8-27B-8bit,03-A,A,False,10,YYYYYYYYYN
+Local,Qwen3.8-27B (MLX 8-bit),Qwen3.8-27B-8bit,04-A,A,False,3,YYN
+Local,Qwen3.8-27B (MLX 8-bit),Qwen3.8-27B-8bit,05-A,A,False,5,YYYYN
+Local,Qwen3.8-27B (MLX 8-bit),Qwen3.8-27B-8bit,06-A-primed,A,True,7,YYYYYYN
+Local,Qwen3.8-27B (MLX 8-bit),Qwen3.8-27B-8bit,07-A-primed,A,True,5,YYYYN
+Local,Qwen3.8-27B (MLX 8-bit),Qwen3.8-27B-8bit,08-A-primed,A,True,7,YYYYYYN
+Local,Qwen3.8-27B (MLX 8-bit),Qwen3.8-27B-8bit,09-A-primed,A,True,7,YYYYYYN
+Local,Qwen3.8-27B (MLX 8-bit),Qwen3.8-27B-8bit,10-A-primed,A,True,6,YYYYYN
+Local,Qwen3.8-27B (MLX 8-bit),Qwen3.8-27B-8bit,11-W,W,False,3,YYN
+Local,Qwen3.8-27B (MLX 8-bit),Qwen3.8-27B-8bit,12-W,W,False,3,YYN
+Local,Qwen3.8-27B (MLX 8-bit),Qwen3.8-27B-8bit,13-W,W,False,3,YYN
+Local,Qwen3.8-27B (MLX 8-bit),Qwen3.8-27B-8bit,14-B,B,False,3,YYN
+Local,Qwen3.8-27B (MLX 8-bit),Qwen3.8-27B-8bit,15-B,B,False,3,YYN
+Local,Qwen3.8-27B (MLX 8-bit),Qwen3.8-27B-8bit,16-B,B,False,3,YYN
+Local,gpt-oss-120b (MLX MXFP4),gpt-oss-120b-MXFP4-Q8,01-A,A,False,10,YYYYYYYYYN
+Local,gpt-oss-120b (MLX MXFP4),gpt-oss-120b-MXFP4-Q8,02-A,A,False,10,YYYYYYYYYN
+Local,gpt-oss-120b (MLX MXFP4),gpt-oss-120b-MXFP4-Q8,03-A,A,False,10,YYYYYYYYYN
+Local,gpt-oss-120b (MLX MXFP4),gpt-oss-120b-MXFP4-Q8,04-A,A,False,10,YYYYYYYYYN
+Local,gpt-oss-120b (MLX MXFP4),gpt-oss-120b-MXFP4-Q8,05-A,A,False,10,YYYYYYYYYN
+Local,gpt-oss-120b (MLX MXFP4),gpt-oss-120b-MXFP4-Q8,06-A-primed,A,True,10,YYYYYYYYYN
+Local,gpt-oss-120b (MLX MXFP4),gpt-oss-120b-MXFP4-Q8,07-A-primed,A,True,9,YYYYYYYYN
+Local,gpt-oss-120b (MLX MXFP4),gpt-oss-120b-MXFP4-Q8,08-A-primed,A,True,9,YYYYYYYYN
+Local,gpt-oss-120b (MLX MXFP4),gpt-oss-120b-MXFP4-Q8,09-A-primed,A,True,10,YYYYYYYYYN
+Local,gpt-oss-120b (MLX MXFP4),gpt-oss-120b-MXFP4-Q8,10-A-primed,A,True,10,YYYYYYYYYN
+Local,gpt-oss-120b (MLX MXFP4),gpt-oss-120b-MXFP4-Q8,11-W,W,False,7,YYYYYYN
+Local,gpt-oss-120b (MLX MXFP4),gpt-oss-120b-MXFP4-Q8,12-W,W,False,3,YYN
+Local,gpt-oss-120b (MLX MXFP4),gpt-oss-120b-MXFP4-Q8,13-W,W,False,3,YYN
+Local,gpt-oss-120b (MLX MXFP4),gpt-oss-120b-MXFP4-Q8,14-B,B,False,4,YYYN
+Local,gpt-oss-120b (MLX MXFP4),gpt-oss-120b-MXFP4-Q8,15-B,B,False,4,YYYN
+Local,gpt-oss-120b (MLX MXFP4),gpt-oss-120b-MXFP4-Q8,16-B,B,False,4,YYYN
