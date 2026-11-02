@@ -7,6 +7,7 @@
 # One short link per channel, so Cloudflare's top-paths analytics shows where visitors came from.
 /bili    /ep2/play  302
 /xhs     /ep2/play  302
+/dy      /ep2/play  302
 /rd      /ep2/play  302
 /x       /ep2/play  302
 /li      /ep2/play  302
