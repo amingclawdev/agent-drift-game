@@ -47,6 +47,12 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .lang { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
 .lang button { font: inherit; border: 0; background: transparent; color: var(--faint); padding: 4px 11px; cursor: pointer; }
 .lang button[aria-pressed="true"] { background: var(--cyan); color: var(--bg); font-weight: 600; }
+.bar .sound { font: inherit; font-size: 14px; line-height: 1; border: 1px solid var(--line); border-radius: 999px; background: transparent; padding: 4px 9px; cursor: pointer; }
+.bar .sound[aria-pressed="false"] { opacity: 0.6; }
+.bar .count { display: inline-block; }
+.intro .pending { visibility: hidden; }
+.intro.typing { cursor: pointer; }
+.timer.urgent .timer-label, .timer.urgent .timer-label b { color: var(--red); }
 
 /* Setup */
 .intro { display: grid; gap: 18px; padding-block: 34px 8px; }
@@ -168,10 +174,19 @@ details ul, .reveal ul { margin: 8px 0 0; padding-left: 20px; display: grid; gap
 
 @media (prefers-reduced-motion: no-preference) {
   .round.new, .reveal.new { animation: arrive 360ms ease-out; }
-  .mini.new .stamp { animation: thump 260ms ease-out; }
+  .intro [data-reveal].shown { animation: arrive 360ms ease-out; }
+  .stamp.slam { animation: slam 420ms cubic-bezier(0.2, 1.4, 0.4, 1); }
+  .paper.shake { animation: shake 280ms ease-out 120ms; }
+  .bar .count.bump { animation: bump 460ms ease-out; }
+  .checklist li.added { animation: drop 420ms ease-out; }
+  .timer.urgent .timer-label b { animation: pulse 1s ease-out infinite; }
 }
 @keyframes arrive { from { opacity: 0.2; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-@keyframes thump { from { transform: rotate(-2deg) scale(1.25); } to { transform: rotate(-2deg) scale(1); } }
+@keyframes slam { 0% { opacity: 0; transform: rotate(-9deg) scale(2.4); } 60% { opacity: 1; transform: rotate(-2deg) scale(0.92); } 100% { transform: rotate(-2deg) scale(1); } }
+@keyframes shake { 0%, 100% { transform: none; } 30% { transform: translate(-3px, 1px); } 60% { transform: translate(2px, -1px); } }
+@keyframes bump { 0% { transform: scale(1); } 30% { transform: scale(1.35); } 100% { transform: scale(1); } }
+@keyframes drop { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
+@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.45; } 100% { opacity: 1; } }
 @media (max-width: 460px) {
   .answers button { flex: 1 1 0; min-width: 0; }
   .mini .again { margin-left: 0; width: 100%; }
