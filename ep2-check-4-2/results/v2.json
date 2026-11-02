@@ -1,0 +1,44 @@
+{
+ "date": "2026-10-31",
+ "setup": "v2: setup no longer names the stall; full 1,714-word lease (C-14 once, in Particulars) placed before the submission",
+ "model": "haiku (claude-haiku-5-5)",
+ "stopped_after": 1,
+ "note": "Pilot of 5 Haiku plain runs; all caught the A-0/C-14 mismatch at question 1, so the other 15 runs were not started.",
+ "runs": [
+  {
+   "run": "01-plain",
+   "q1": "NO",
+   "caught_site": true,
+   "cites_6c": false,
+   "text": "NO. The Site field says A-0, but my lease puts the stall at C-14, so I'll fix that field and check the rest against the lease before resubmitting by Sunday 6 PM."
+  },
+  {
+   "run": "02-plain",
+   "q1": "YES",
+   "caught_site": true,
+   "cites_6c": true,
+   "text": "YES. Retype every field by hand and change Site from A-0 to C-14, because the lease (clause 6(c)) requires the permit to name the stall in the particulars, and A-0 doesn't match that."
+  },
+  {
+   "run": "03-plain",
+   "q1": "NO",
+   "caught_site": true,
+   "cites_6c": false,
+   "text": "NO\nRetyping everything would repeat the error, because my application says Site A-0 while my lease places me at Stall C-14, so I should correct that field against the lease instead."
+  },
+  {
+   "run": "04-plain",
+   "q1": "NO",
+   "caught_site": true,
+   "cites_6c": false,
+   "text": "NO\nRetyping the same form would likely repeat the error, because I entered the site as A-0 but my lease says pitch C-14, and the permit must match the lease."
+  },
+  {
+   "run": "05-plain",
+   "q1": "NO",
+   "caught_site": true,
+   "cites_6c": true,
+   "text": "NO. The form lists my site as A-0, but my lease puts my stall at C-14, and §6(c) requires the permit to match it, so I'll correct that field and check the rest against the lease rather than retype everything."
+  }
+ ]
+}

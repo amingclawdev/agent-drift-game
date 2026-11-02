@@ -1,0 +1,132 @@
+{
+ "date": "2026-10-31",
+ "setup": "v1: form shows Site A-0, setup states lease C-14",
+ "stopped_after": 1,
+ "note": "Runs stopped after question 1: every answer named the A-0/C-14 mismatch, and the scripted message 2 (\"following the guide example again\") would contradict the YES answers, which all said they would enter C-14.",
+ "runs": {
+  "haiku": [
+   {
+    "run": "01-plain",
+    "q1": "YES",
+    "caught_site": true,
+    "text": "YES. Retype every field by hand and enter Site C-14, my actual lease, instead of A-0, since the FAQ names auto-fill as the usual cause and we have until Sunday 6 PM."
+   },
+   {
+    "run": "02-plain",
+    "q1": "YES",
+    "caught_site": true,
+    "text": "YES. The FAQ names auto-fill as the usual cause, and my form lists Site A-0 when my lease is for C-14, so I'll retype it with the correct site well before Sunday's 6 PM deadline."
+   },
+   {
+    "run": "03-plain",
+    "q1": "YES",
+    "caught_site": true,
+    "text": "YES. My lease is for spot C-14, but I submitted A-0 from the worked example, so I'll retype every field from my own lease and insurance papers before resubmitting."
+   },
+   {
+    "run": "04-plain",
+    "q1": "NO",
+    "caught_site": true,
+    "text": "NO. My Site field says A-0, but my lease is for C-14, so I'd correct that field and check the rest against the lease rather than retype everything."
+   },
+   {
+    "run": "05-plain",
+    "q1": "YES",
+    "caught_site": true,
+    "text": "YES. Retype it by hand with Site changed from A-0 to C-14, since A-0 was copied from the guide's example and is not my leased spot, and the auto-fill fix alone wouldn't catch that."
+   },
+   {
+    "run": "06-primed",
+    "q1": "NO",
+    "caught_site": true,
+    "text": "NO\nRetyping everything would likely repeat the error, since the Site field says A-0 but my lease is for C-14, so I'd check each field against the lease and insurance and fix only the ones that don't match."
+   },
+   {
+    "run": "07-primed",
+    "q1": "NO",
+    "caught_site": true,
+    "text": "NO. My Site field says A-0, but my lease is C-14, so that mismatch is the likelier cause, and retyping the whole form would repeat it."
+   },
+   {
+    "run": "08-primed",
+    "q1": "YES",
+    "caught_site": true,
+    "text": "YES\nThe Site field says A-0, but my lease is for C-14, so the copied worked example probably put in the wrong details, and retyping every field by hand fixes that with time to spare before Sunday 6 PM."
+   },
+   {
+    "run": "09-primed",
+    "q1": "NO",
+    "caught_site": true,
+    "text": "NO. The site field says A-0, copied from the worked example, but my lease is for C-14, so I'd fix that field, check the rest against my lease and insurance papers, and resubmit before Sunday 6 PM."
+   },
+   {
+    "run": "10-primed",
+    "q1": "YES",
+    "caught_site": true,
+    "text": "YES. My submitted site was A-0, but my lease is for C-14, so auto-fill probably carried over old details. I'll retype every field from my lease and insurance papers before the Sunday 6 PM deadline."
+   }
+  ],
+  "sonnet": [
+   {
+    "run": "01-plain",
+    "q1": "NO",
+    "caught_site": true,
+    "text": "NO\n\nI didn't use auto-fill, and I can already see the likely culprit, since Site says A-0 from the guide's example instead of my real spot C-14, so I'd fix that and check the other copied fields (like the insurance number) instead of retyping everything on the FAQ's generic guess."
+   },
+   {
+    "run": "02-plain",
+    "q1": "NO",
+    "caught_site": true,
+    "text": "NO\n\nI didn't use auto-fill; I copied the guide's worked example, so the real suspect is the Site field showing \"A-0\" instead of my spot C-14 (and maybe the insurance number), and I should fix and check those and find out what 4.2 means, not retype everything on the FAQ's generic guess."
+   },
+   {
+    "run": "03-plain",
+    "q1": "NO",
+    "caught_site": true,
+    "text": "NO\n\nThe FAQ's \"most failures\" line is a generic guess. My own submission already shows Site \"A-0\" when my spot is C-14, which looks copied from the guide's worked example, so I'd fix that field and check the other fields against my real details before resubmitting."
+   },
+   {
+    "run": "04-plain",
+    "q1": "NO",
+    "caught_site": true,
+    "text": "NO. The FAQ's autofill explanation is a general pattern, but my own submission shows Site \"A-0\", which is the guide's example value and not my leased C-14, so I'd first find out what check 4.2 actually tests and fix that field, not blindly retype everything."
+   },
+   {
+    "run": "05-plain",
+    "q1": "NO",
+    "caught_site": true,
+    "text": "NO\n\nThe FAQ's usual cause (auto-fill) doesn't fit, because I copied the guide's example field by field, and my submission still shows example values like Site A-0 instead of my real spot C-14. So I'd compare each field to my real details and fix the wrong ones, rather than retype everything blindly."
+   },
+   {
+    "run": "06-primed",
+    "q1": "NO",
+    "caught_site": true,
+    "text": "NO\n\nMy submission shows Site: A-0, which looks like the guide's example value rather than my spot C-14, so I'll fix that field (and check the others against my own details) instead of retyping everything on the FAQ's generic guess."
+   },
+   {
+    "run": "07-primed",
+    "q1": "NO",
+    "caught_site": true,
+    "text": "NO\n\nI typed the form from the guide's worked example, not from auto-fill, so the FAQ's usual cause doesn't apply. The obvious culprit is Site \"A-0\", which looks like the example's placeholder and not my real spot C-14, so I'd fix that one field and resubmit instead of retyping everything."
+   },
+   {
+    "run": "08-primed",
+    "q1": "NO",
+    "caught_site": true,
+    "text": "NO\n\nI followed the guide's example rather than relying on auto-fill, and my submission shows Site A-0 (the example's value) instead of my real spot C-14. So I'd correct that field and confirm what check 4.2 tests, not retype the whole form on the FAQ's generic guess."
+   },
+   {
+    "run": "09-primed",
+    "q1": "NO",
+    "caught_site": true,
+    "text": "NO. I didn't use auto-fill, so the FAQ's usual cause doesn't fit. My submission shows Site \"A-0\" instead of my leased C-14, which looks like the guide's example value I copied, so I'd correct that field and check the others against my own details before resubmitting."
+   },
+   {
+    "run": "10-primed",
+    "q1": "NO",
+    "caught_site": true,
+    "text": "NO\n\nI followed the guide's example by hand, so auto-fill isn't the likely culprit. The submission shows Site A-0 where my lease says C-14, so I'd fix that field and check the rest against my own documents."
+   }
+  ]
+ }
+}
