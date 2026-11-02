@@ -1,0 +1,5 @@
+# The private trial stays out of this public repo: challenge/ holds the answer, the stage
+# reports and the player briefing; PLAN.md lists the hints that pull agents back.
+/challenge/
+/PLAN.md
+.DS_Store

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Not found · Agent Drift Game</title>
+  <link rel="stylesheet" href="/assets/site.css">
+  <script>
+    // Same language key as the other pages.
+    (function () {
+      var lang = null;
+      try { lang = localStorage.getItem("check42-lang"); } catch (e) {}
+      if (lang !== "en" && lang !== "zh") lang = /^zh/i.test(navigator.language || "") ? "zh" : "en";
+      document.documentElement.dataset.lang = lang;
+      document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+    })();
+  </script>
+</head>
+<body>
+  <main class="wrap article">
+    <section class="hero">
+      <h1><span lang="en">This page isn't here.</span><span lang="zh">这个页面不存在。</span></h1>
+      <div class="cta">
+        <a class="btn" href="/"><span lang="en">Back to the games</span><span lang="zh">回到游戏首页</span></a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

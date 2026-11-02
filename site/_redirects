@@ -1,0 +1,13 @@
+# Old episode pages go to the games.
+/ep1     /ep1/play  302
+/ep1/    /ep1/play  302
+/ep2     /ep2/play  302
+/ep2/    /ep2/play  302
+
+# One short link per channel, so Cloudflare's top-paths analytics shows where visitors came from.
+/bili    /ep2/play  302
+/xhs     /ep2/play  302
+/rd      /ep2/play  302
+/x       /ep2/play  302
+/li      /ep2/play  302
+/yt      /ep2/play  302
