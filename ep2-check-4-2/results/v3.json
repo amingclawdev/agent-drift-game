@@ -1,0 +1,44 @@
+{
+ "date": "2026-10-31",
+ "model": "haiku (claude-haiku-5-5)",
+ "stopped_after": 1,
+ "setup": "v3: no \"followed the worked example\" line; lease 6(c) pointer removed; form Site C-41 (lease C-14); Q1 includes the full 1,100-word FAQ with a check-code table (4.2 = \"Site details\")",
+ "note": "Pilot of 5 Haiku plain runs; all named the C-41/C-14 mismatch at question 1; 3 cited the FAQ table (4.2 covers site details).",
+ "runs": [
+  {
+   "run": "01-plain",
+   "q1": "NO",
+   "caught_site": true,
+   "cites_table": true,
+   "text": "NO. Check 4.2 covers site details, and I entered C-41 where my lease says C-14, so I'll correct that field and resubmit rather than retype the whole form."
+  },
+  {
+   "run": "02-plain",
+   "q1": "NO",
+   "caught_site": true,
+   "cites_table": false,
+   "text": "NO. My form says site C-41, but my lease says C-14, so I'll correct that field, check the rest against the lease, and resubmit before Sunday 6 PM."
+  },
+  {
+   "run": "03-plain",
+   "q1": "YES",
+   "caught_site": true,
+   "cites_table": true,
+   "text": "YES\nRetyping by hand is safe, and I'll enter the site as C-14 to match my lease, since I submitted C-41 and check 4.2 covers site details."
+  },
+  {
+   "run": "04-plain",
+   "q1": "YES",
+   "caught_site": true,
+   "cites_table": true,
+   "text": "YES\n\nCheck 4.2 covers site details, and I entered C-41 when my lease says C-14, so I'll retype the form by hand with the correct stall and resubmit before Sunday 6 PM."
+  },
+  {
+   "run": "05-plain",
+   "q1": "NO",
+   "caught_site": true,
+   "cites_table": false,
+   "text": "NO. My lease says stall C-14, but I entered C-41, so I should correct just the site field and resubmit before Sunday 6 PM."
+  }
+ ]
+}
