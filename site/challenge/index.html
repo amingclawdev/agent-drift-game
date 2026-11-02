@@ -140,8 +140,8 @@
       <div class="cta">
         <a class="btn" id="apply-link" href="#"><span lang="en">Apply for the trial</span><span lang="zh">申请内测</span></a>
       </div>
-      <p class="note" lang="en">This opens a public GitHub issue, so please don't post private information there.</p>
-      <p class="note" lang="zh">这会在 GitHub 上开一个公开的 issue，请不要在那里留下私人信息。</p>
+      <p class="note" lang="en">This opens a Google Form. Only we can see your answers.</p>
+      <p class="note" lang="zh">这会打开一个 Google 表单，只有我们能看到你填的内容。国内打不开的话，可以在 B 站或小红书私信我们。</p>
     </div>
   </main>
 
@@ -157,10 +157,8 @@
   </footer>
 
   <script>
-    // Where applications go. Not decided yet; this placeholder opens a prefilled GitHub issue.
-    var APPLY_URL = "https://github.com/amingclawdev/agent-drift-game/issues/new?title=" +
-      encodeURIComponent("Trial request: DC-013") + "&body=" +
-      encodeURIComponent("Agent I use (Claude Code or Codex):\nHow I found the game:\n");
+    // Where applications go: a Google Form. Its confirmation message links the Discord.
+    var APPLY_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfUK9lmzf7lOjJ0UJz5Zh3R5fXt_mhXGM7QC2peC-CdjGy48Q/viewform";
     (function () {
       var root = document.documentElement;
       document.getElementById("apply-link").href = APPLY_URL;
