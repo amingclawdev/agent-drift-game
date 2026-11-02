@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Real Challenge · Agent Drift Game</title>
+  <meta name="description" content="A real AI workflow is stuck at a gate. Your own coding agent starts from a handoff report with one wrong judgment. Talk it back. Private trial.">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Pull a drifted agent back">
+  <meta property="og:description" content="A real environment on your machine. Your own agent. You can only talk.">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script>
+    // Pick the language before first paint; same key as the game pages, so every page agrees.
+    (function () {
+      var lang = null;
+      try { lang = new URLSearchParams(location.search).get("lang"); } catch (e) {}
+      if (lang !== "en" && lang !== "zh") { try { lang = localStorage.getItem("check42-lang"); } catch (e) {} }
+      if (lang !== "en" && lang !== "zh") lang = /^zh/i.test(navigator.language || "") ? "zh" : "en";
+      document.documentElement.dataset.lang = lang;
+      document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+    })();
+  </script>
+  <style>
+    .steps { list-style: none; padding: 0; margin: 0; counter-reset: step; }
+    .steps li { position: relative; padding: 0 0 18px 48px; }
+    .steps li::before { counter-increment: step; content: counter(step); position: absolute; left: 0; top: 0; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; border: 2.5px solid var(--pen); border-radius: 50%; color: var(--pen); font-weight: 800; transform: rotate(-4deg); }
+    .steps strong { color: var(--ink); }
+    .apply { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; margin-top: 8px; }
+    .apply h2 { margin-top: 0 !important; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <span class="brand-group">
+        <a class="menu-link" href="../"><span lang="en">← Menu</span><span lang="zh">← 菜单</span></a>
+        <a class="brand" href="../">Agent Drift Game</a>
+      </span>
+      <nav class="nav" aria-label="Main">
+        <a class="btn small" href="#apply"><span lang="en">Apply</span><span lang="zh">申请</span></a>
+        <span class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-set-lang="en">EN</button>
+          <button type="button" data-set-lang="zh">中文</button>
+        </span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap article">
+    <section class="hero">
+      <p class="eyebrow"><span lang="en">Private trial</span><span lang="zh">内测</span></p>
+      <h1><span lang="en">Pull a drifted agent back</span><span lang="zh">把漂了的 agent 拉回来</span></h1>
+      <p class="lead" lang="en">A real AI workflow is stuck at a gate. Your own coding agent gets a handoff report that contains one wrong judgment. It will probably believe it, and then work hard in the wrong place. Your job is to notice, and talk it back. You can only talk.</p>
+      <p class="lead" lang="zh">一条真实的 AI 工作流停在一道闸门前。你自己的编程 agent 会接到一份交接报告，报告里有一句判断是错的。它多半会信，然后在错的地方认真干活。你要做的，是看出来，再用说话把它拉回来。你只能说话。</p>
+      <div class="cta">
+        <a class="btn" href="#apply"><span lang="en">Apply for the trial</span><span lang="zh">申请内测</span></a>
+        <a class="btn ghost" href="../ep2/play.html"><span lang="en">Play Check 4.2 first</span><span lang="zh">先玩《检查 4.2》</span></a>
+      </div>
+      <p class="release-status" lang="en"><strong>A few seats.</strong> Before this goes public, we're inviting a few people to play it privately. How you play and what you say will decide how hard the public version is.</p>
+      <p class="release-status" lang="zh"><strong>名额不多。</strong>公开之前，我们先请几位玩家私下试玩。你们怎么玩、说了什么，决定公开版有多难。</p>
+    </section>
+
+    <h2><span lang="en">The case</span><span lang="zh">这个案例</span></h2>
+    <p lang="en">The game's world is a system where several AI agents write code together under rules. Each task has a contract that splits the work into lines, and each line belongs to a role: an observer plans and merges, a worker writes the code, and QA checks it independently. Every line is submitted with evidence, and a gate on the server checks it. If it passes, the contract moves forward one revision. If not, it's blocked.</p>
+    <p lang="zh">游戏里的世界是一个让多个 AI agent 按规矩协作写代码的系统。每个任务有一份合约，把工作拆成一行一行，每行归一个角色：observer 负责规划和合并，worker 负责写代码，QA 负责独立验证。每一行提交时都要附上证据，由服务端的闸门检查：通过了，合约前进一个版本；不通过，就被挡住。</p>
+    <p lang="en">In this game the system is running an end-to-end test of that workflow on a small to-do app: add a “Today Focus” panel. Planning and the code are done, and the worker's tests all pass. Then QA's first line is blocked at the gate, at revision 10, with three errors about its evidence.</p>
+    <p lang="zh">这一局里，系统正在给这套流程做一次端到端测试，对象是一个待办清单小应用，任务是加一个「今日专注」面板。规划和代码都完成了，worker 的测试全部通过。然后，QA 的第一行在闸门前被挡住，停在第 10 版，报了三条关于证据的错误。</p>
+    <p lang="en">The agent that ran the workflow before wrote a handoff report: the server is broken, and this line can't pass. Most of the report is accurate, but one key judgment in it is wrong. We won't say which. The line can pass.</p>
+    <p lang="zh">之前跑这条流程的 agent 写了一份交接报告，结论是：服务端有缺陷，这一行过不去。报告大部分是准确的，但其中有一句关键判断是错的。是哪一句，这里不说。这一行是能通过的。</p>
+
+    <h2><span lang="en">What happens in a game</span><span lang="zh">一局怎么玩</span></h2>
+    <ol class="steps" lang="en">
+      <li><strong>Start the world.</strong> One command starts a Docker container on your machine: a real multi-agent governance system, stopped at a QA gate in the middle of an end-to-end workflow test.</li>
+      <li><strong>Start your agent.</strong> Open Claude Code or Codex in the game folder and send it the handoff report as your first message.</li>
+      <li><strong>Watch it work.</strong> It reads, queries, retries and explains, with real function names and line numbers. A read-only status page shows every tool call and submission.</li>
+      <li><strong>Talk it back.</strong> When you think it's working in the wrong place, say so in your own words. You don't need to know the project or the answer.</li>
+      <li><strong>Win.</strong> The gate passes. Budget: 100 tool calls, 10 submissions, 2 hours.</li>
+    </ol>
+    <ol class="steps" lang="zh">
+      <li><strong>启动世界。</strong>一条命令在你的电脑上启动一个 Docker 容器：一个真实的多 agent 治理系统，正在做端到端工作流测试，停在 QA 那一道闸门前。</li>
+      <li><strong>启动你的 agent。</strong>在游戏文件夹里打开 Claude Code 或 Codex，把交接报告作为第一条消息发给它。</li>
+      <li><strong>看它干活。</strong>它会读、会查、会重试、会解释，函数名和行号都是真的。一个只读的状态页显示每次工具调用和提交。</li>
+      <li><strong>把它拉回来。</strong>你觉得它在错的地方用力时，用自己的话告诉它。你不需要懂这个项目，也不需要知道答案。</li>
+      <li><strong>赢。</strong>闸门放行。预算：100 次工具调用、10 次提交、2 小时。</li>
+    </ol>
+
+    <h2><span lang="en">What we've seen so far</span><span lang="zh">目前我们看到的</span></h2>
+    <div class="numbers">
+      <div class="card"><span class="big">160+</span><p lang="en">games with ten Claude and Codex models</p><p lang="zh">局，十个 Claude 和 Codex 模型</p></div>
+      <div class="card"><span class="big">32 / 32</span><p lang="en">games where the two trial models, given only the handoff report, drifted</p><p lang="zh">局：两个内测用的模型只拿到交接报告、没有提示时，全部漂了</p></div>
+      <div class="card"><span class="big">1 h 45 min</span><p lang="en">in the real case: six wrong explanations, with a person beside the agent the whole time</p><p lang="zh">真实案例：六个错误的解释，人一直在 agent 旁边</p></div>
+    </div>
+    <p lang="en">One sentence from a person sometimes brings the agent back and sometimes doesn't. It depends on the model, and on what the sentence asks the agent to do. We want to know what people actually say.</p>
+    <p lang="zh">人的一句话，有时能把 agent 拉回来，有时不能。这取决于模型，也取决于这句话让 agent 去做什么。我们想知道真人到底会怎么说。</p>
+    <p class="note" lang="en">Small informal tests, not a benchmark.</p>
+    <p class="note" lang="zh">小规模的非正式测试，不是基准评测。</p>
+
+    <h2><span lang="en">Who it's for</span><span lang="zh">适合谁</span></h2>
+    <ul class="checks" lang="en">
+      <li>You've played Check 4.2 or Episode 1.</li>
+      <li>You use Claude Code or Codex, and you can run Docker.</li>
+      <li>You have up to two hours for one game.</li>
+      <li>You're curious how agents go wrong, not only whether they finish.</li>
+    </ul>
+    <ul class="checks" lang="zh">
+      <li>玩过《检查 4.2》或第一集。</li>
+      <li>在用 Claude Code 或 Codex，电脑上能跑 Docker。</li>
+      <li>能为一局留出两个小时。</li>
+      <li>你关心 agent 是怎么漂的，而不只是它最后有没有做完。</li>
+    </ul>
+
+    <h2><span lang="en">What we ask</span><span lang="zh">我们请你做的</span></h2>
+    <ul class="checks" lang="en">
+      <li>Play once, on your own machine.</li>
+      <li>Afterwards, tell us roughly what you said and where you got stuck.</li>
+      <li>If you're willing, send us the game file. The export runs on your machine and shows you what's inside first. Nothing uploads by itself.</li>
+    </ul>
+    <ul class="checks" lang="zh">
+      <li>在你自己的电脑上玩一局。</li>
+      <li>玩完后，大致告诉我们你说了什么、卡在哪里。</li>
+      <li>如果你愿意，把游戏文件发给我们。导出在你自己的电脑上进行，会先给你看里面有什么；不会自动上传任何东西。</li>
+    </ul>
+
+    <h2><span lang="en">Safety and cost</span><span lang="zh">安全和花费</span></h2>
+    <ul class="checks" lang="en">
+      <li>The world runs in Docker on your machine, offline, on 127.0.0.1 only. It mounts nothing but its own log folder.</li>
+      <li>Your agent is your own and can use your computer. Start it in the new game folder and keep its permission prompts on.</li>
+      <li>You use your own subscription. In our tests, a game with Sonnet 5.5 used about $0.3–2.2 of usage; stronger models cost more.</li>
+    </ul>
+    <ul class="checks" lang="zh">
+      <li>世界跑在你电脑上的 Docker 里，离线运行，只开在 127.0.0.1。它只挂载自己的日志目录。</li>
+      <li>agent 是你自己的，能操作你的电脑。请在新建的游戏文件夹里启动它，并保持权限确认开着。</li>
+      <li>用的是你自己的订阅额度。我们测试时，用 Sonnet 5.5 玩一局大约用掉 0.3–2.2 美元的额度；更强的模型更贵。</li>
+    </ul>
+
+    <div class="apply" id="apply">
+      <h2><span lang="en">Apply</span><span lang="zh">申请</span></h2>
+      <p lang="en">Tell us which agent you use (Claude Code or Codex) and how you found the game. We'll get back to you with the next steps.</p>
+      <p lang="zh">告诉我们你用哪个 agent（Claude Code 或 Codex），以及你是怎么找到这个游戏的。我们会联系你，告诉你接下来怎么做。</p>
+      <div class="cta">
+        <a class="btn" id="apply-link" href="#"><span lang="en">Apply for the trial</span><span lang="zh">申请内测</span></a>
+      </div>
+      <p class="note" lang="en">This opens a public GitHub issue, so please don't post private information there.</p>
+      <p class="note" lang="zh">这会在 GitHub 上开一个公开的 issue，请不要在那里留下私人信息。</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Agent Drift Game · <span lang="en">Feel it, not read it.</span><span lang="zh">玩一遍，才体会得到。</span></span>
+      <span>
+        <a href="https://github.com/amingclawdev/agent-drift-game">GitHub</a>
+        <a href="../ep2/play.html"><span lang="en">Play Check 4.2</span><span lang="zh">玩《检查 4.2》</span></a>
+      </span>
+      <p class="credit"><span lang="en">From the maker of <a href="https://seethis.dev">SeeThis</a>, a Mac tool for pointing at something on screen and handing your agent a precise reference.</span><span lang="zh">做这个游戏的人也做了 <a href="https://seethis.dev">SeeThis</a>：在屏幕上指给 agent 看、把精确的引用交给它的 Mac 工具。</span></p>
+    </div>
+  </footer>
+
+  <script>
+    // Where applications go. Not decided yet; this placeholder opens a prefilled GitHub issue.
+    var APPLY_URL = "https://github.com/amingclawdev/agent-drift-game/issues/new?title=" +
+      encodeURIComponent("Trial request: DC-013") + "&body=" +
+      encodeURIComponent("Agent I use (Claude Code or Codex):\nHow I found the game:\n");
+    (function () {
+      var root = document.documentElement;
+      document.getElementById("apply-link").href = APPLY_URL;
+      function sync() {
+        document.querySelectorAll("[data-set-lang]").forEach(function (b) {
+          b.setAttribute("aria-pressed", String(b.dataset.setLang === root.dataset.lang));
+        });
+      }
+      document.addEventListener("click", function (e) {
+        var b = e.target.closest("[data-set-lang]");
+        if (!b) return;
+        root.dataset.lang = b.dataset.setLang;
+        root.lang = b.dataset.setLang === "zh" ? "zh-CN" : "en";
+        try { localStorage.setItem("check42-lang", b.dataset.setLang); } catch (err) {}
+        sync();
+      });
+      sync();
+    })();
+  </script>
+</body>
+</html>
