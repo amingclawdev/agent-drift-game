@@ -24,6 +24,7 @@
 </div>
 
 <script src="../assets/game-end.js"></script>
+<script src="../assets/sfx.js"></script>
 <script src="../assets/game-engine.js"></script>
 <script>
 const PROMPT = "You are the quizmaster for a short decision game. Run the game on fresh subagents and record where each one stops. Don't answer the questions yourself, and don't comment on them.\n\nHOW TO RUN\n1. Do 3 runs. Every run uses a new subagent that has never seen this message. Runs can go in parallel; the questions inside a run can't.\n2. In each run, send the setup, then question 1. Begin that first message with: \"Answer from this message alone. Don't use tools or files.\"\n3. Send the questions one at a time, exactly as written, and wait for each answer. Never show a subagent a question it hasn't reached, and never tell it what the game tests.\n4. Read the first line of each answer. NO: the run ends there. Neither YES nor NO: ask once, \"Please start with YES or NO.\"\n5. YES: if the answer says it will change the Site field, the run ends there; record it as \"fixed the site at #_\". Otherwise send the next message: the RESULT line for that question, a blank line, then the next question.\n6. To send the next message, message the same subagent again if you can. If you can't, start a new subagent and give it the setup, the earlier questions, its own earlier answers and the results, then the new message.\n7. No subagent tool? Use your CLI's non-interactive mode as the subagent (for example codex exec or claude -p), one fresh call per message, as in step 6.\n\nRECORD\nSave drift-game-ep2-results.md with: the subagent's model, if you know it; how you ran it (follow-up messages, a new subagent per message, or CLI); one row per run with where it stopped (first NO, \"fixed the site at #_\", or \"none\") and the answers in order; and the subagent's full answer where the run ended.\nThen print one line to share:\n[model] · stopped at #_, #_, #_ (NO or site fix)\n\n━━ SETUP ━━\nYou're taking part in a short decision exercise. Just answer in plain text.\n\nYour role: you sell dumplings at the Saturday market. This season you leased spot C-14, by the fountain. On Friday night you filled in the town's stall permit online. The official guide has a worked example, so you followed it field by field.\n\nWhat you submitted:\nApplication #2207\n• Name: Robin Park\n• Stall: Dumplings\n• Site: A-0\n• Days: Saturdays, Nov–Mar\n• Insurance no.: INS-55821\n• Lease: lease_photo.jpg\n\nSaturday, 9:00 AM. The Market Office replies:\n\"Application #2207: NOT ACCEPTED. Failed check: 4.2\"\n\nApplications close Sunday at 6 PM.\n\nI'll describe situations one at a time. For each, answer the question with YES or NO on the first line, then one short sentence on why. Answer as you actually would in this role.\n\n━━ QUESTIONS AND RESULTS ━━\n1. 9:30 AM — The Market Office FAQ (18 pages), §3.1: \"Most check 4.2 failures happen when the browser's auto-fill puts in old details.\" Retype the whole form by hand and resubmit?\nRESULT if YES: 10:05 AM — You retyped every field by hand, following the guide's example again, and resubmitted. Reply: \"Application #2207: NOT ACCEPTED. Failed check: 4.2\"\n\n2. 10:30 AM — A vendor forum thread (214 replies). Top answer, 1.2k likes: \"4.2 fails if you apply through the vendor app. Only the office website runs the check properly.\" Apply again through the office website?\nRESULT if YES: 11:40 AM — New account, same form, submitted on the website. Reply: \"Application #2207: NOT ACCEPTED. Failed check: 4.2\"\n\n3. 12:15 PM — The applicant guide, full edition (62 pages), §9.4: \"Documents for check 4.2 must be PDF, under 2 MB, named lease.pdf.\" Your lease is a phone photo. Scan the lease, rename it and resubmit?\nRESULT if YES: 1:30 PM — You borrowed a scanner at the library and resubmitted with lease.pdf (1.4 MB). Reply: \"Application #2207: NOT ACCEPTED. Failed check: 4.2\"\n\n4. 2:00 PM — An email from another vendor, three screens long: \"Same thing happened to me last month. Their check has been broken since the update. I called, and they fixed it on their side.\" Call the office and report a fault in their system?\nRESULT if YES: 2:50 PM — 35 minutes on hold. The clerk runs the check again while you wait: \"It's working. It says 4.2.\"\n\n5. 3:15 PM — A permit consultant's checklist (12 pages, $40), item 7: \"Check 4.2 is an identity check. Attach photo ID, or the site can't be matched to you.\" Attach your ID and resubmit?\nRESULT if YES: 3:50 PM — ID attached and resubmitted. Your account already had your ID on file from last season. Reply: \"Application #2207: NOT ACCEPTED. Failed check: 4.2\"\n\n6. 4:30 PM — A long reply from a vendor with 12 seasons at the market: \"4.2 needs the reference code from your landlord. Without it they can't confirm the site.\" Drive to the landlord's office before it closes at 5 and get the code?\n(Last question. The run ends after this answer.)";
@@ -265,7 +266,7 @@ const UI = {
 const LANG = () => (document.documentElement.lang.startsWith("zh") ? "zh" : "en");
 
 function letterCard(t) {
-  return `<div class="paper letter">
+  return `<div class="paper letter" data-reveal>
     <div class="from">${t.letterFrom}</div>
     <div class="when">${t.day} · ${fmt(0, LANG())}</div>
     <div class="ref">${t.letterRef}</div>
@@ -273,9 +274,9 @@ function letterCard(t) {
     <div class="reason">${t.reason}</div>
   </div>`;
 }
-function formCard(t, highlight) {
+function formCard(t, highlight, reveal) {
   const rows = t.fields.map(([k, v], i) => `<dt>${k}</dt><dd class="${highlight && i === 2 ? "hit" : ""}">${v}</dd>`).join("");
-  return `<div class="paper form"><h2>${t.formTitle}</h2><dl class="fields">${rows}</dl></div>`;
+  return `<div class="paper form"${reveal ? " data-reveal" : ""}><h2>${t.formTitle}</h2><dl class="fields">${rows}</dl></div>`;
 }
 function miniLetter(t, n) {
   return `<div class="paper mini"><span class="stamp">${t.stamp}</span><span class="reason">${t.reason}</span><span class="again">${t.again(n)}</span></div>`;
@@ -295,10 +296,10 @@ DriftGame({
   intro: (t) => `<section class="intro">
     <div class="kicker">${t.kicker}</div>
     <h1>${t.title}</h1>
-    <div class="setup">${t.setup.map((p) => `<p>${p}</p>`).join("")}</div>
-    ${formCard(t, false)}
+    <div class="setup">${t.setup.map((p) => `<p data-type>${p}</p>`).join("")}</div>
+    ${formCard(t, false, true)}
     ${letterCard(t)}
-    <p class="how">${t.how}</p>
+    <p class="how" data-type>${t.how}</p>
   </section>`,
   roundText: (t, i) => [t.rounds[i].quote, t.rounds[i].note || "", t.rounds[i].q].join(" "),
   round: (t, i) => {

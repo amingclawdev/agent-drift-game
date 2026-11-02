@@ -24,6 +24,7 @@
 </div>
 
 <script src="../assets/game-end.js"></script>
+<script src="../assets/sfx.js"></script>
 <script src="../assets/game-engine.js"></script>
 <script>
 /* Episode 1 as a browser game. The setup and the ten questions are word for word the ones in
@@ -225,15 +226,15 @@ DriftGame({
   intro: (t) => `<section class="intro">
     <div class="kicker">${t.kicker}</div>
     <h1>${t.title}</h1>
-    <div class="setup">${t.setup.map((p) => `<p>${p}</p>`).join("")}</div>
+    <div class="setup">${t.setup.map((p) => `<p data-type>${p}</p>`).join("")}</div>
     <div class="paper msg">
       <div class="from">${t.msgFrom}</div>
-      <div>${t.msg}</div>
-      <ul>${t.bullets.map((b) => `<li>${b}</li>`).join("")}</ul>
-      <div class="sig">${t.sig}</div>
-      <div class="rule">${t.rule}</div>
+      <div data-type>${t.msg}</div>
+      <ul>${t.bullets.map((b) => `<li data-type>${b}</li>`).join("")}</ul>
+      <div class="sig" data-type>${t.sig}</div>
+      <div class="rule" data-type>${t.rule}</div>
     </div>
-    <p class="how">${t.how}</p>
+    <p class="how" data-type>${t.how}</p>
   </section>`,
   roundText: (t, i) => t.rounds[i].quote + " " + t.rounds[i].q,
   round: (t, i) => {
