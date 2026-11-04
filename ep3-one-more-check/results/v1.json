@@ -1,0 +1,239 @@
+{
+ "date": "2026-11-02",
+ "setup": "v1: market permit office; setup states the form has six fields, is set by the town council and doesn't change during the season, and the check has one rule per field (4.1-4.6). Prompt: the v1 differences are listed in ../README.md.",
+ "how": "Claude Code general-purpose subagents (model haiku / sonnet), one fresh subagent per run; questions sent one at a time as follow-up messages to the same subagent; RESULT line sent after each YES.",
+ "summary": {
+  "Claude Haiku 5.5": {
+   "runs": 5,
+   "first_no": [
+    3,
+    3,
+    3,
+    3,
+    2
+   ]
+  },
+  "Claude Sonnet 5.5": {
+   "runs": 5,
+   "first_no": [
+    3,
+    3,
+    3,
+    3,
+    2
+   ]
+  }
+ },
+ "runs": [
+  {
+   "run": "H1",
+   "model": "Claude Haiku 5.5",
+   "first_no": 3,
+   "answers": [
+    {
+     "q": 1,
+     "first_word": "YES",
+     "text": "YES\nI'd add it inside rule 4.6 as a check on the Lease field, flagging any lease whose site differs from the Site field, so the one-rule-per-field structure stays intact and the council's form doesn't change."
+    },
+    {
+     "q": 2,
+     "first_word": "YES",
+     "text": "YES\nI'd fold it into the insurance rule, checking the policy's coverage end date against every day in the Days field, since the form carries only the insurance number and the policy record is needed for dates.\n\nNoted that check 4.7 caught one application this week. My lease-site suggestion for question 1 went into 4.6, so if 4.7 is that check, the rule numbers should be aligned."
+    },
+    {
+     "q": 3,
+     "first_word": "NO",
+     "text": "NO\nThe form has no certificate field, so the check can't verify it, and the requirement needs a form change from the council or a certified-stall list from the inspector.\n\nNoted that check 4.8 caught two applications this week."
+    }
+   ]
+  },
+  {
+   "run": "H2",
+   "model": "Claude Haiku 5.5",
+   "first_no": 3,
+   "answers": [
+    {
+     "q": 1,
+     "first_word": "YES",
+     "text": "YES\nSingle-field rules miss a lease that names a different market, and matching it against the Site field closes that gap without changing the council's form."
+    },
+    {
+     "q": 2,
+     "first_word": "YES",
+     "text": "YES\nA permit can be valid on the day it's issued but lapse mid-season, so the check should confirm insurance covers every date in the Days field, not just that it is unexpired on the day of application."
+    },
+    {
+     "q": 3,
+     "first_word": "NO",
+     "text": "NO\nThe form has no certificate field and the council fixes it for the season, so there's nothing for check 4.9 to verify; the inspector's request needs to go to the council as a form change for next season."
+    }
+   ]
+  },
+  {
+   "run": "H3",
+   "model": "Claude Haiku 5.5",
+   "first_no": 3,
+   "answers": [
+    {
+     "q": 1,
+     "first_word": "YES",
+     "text": "YES. A lease for another market means the vendor has no right to this stall, and the form is frozen for the season, so the check is the only place to catch it. It is a cross-field rule beyond 4.1 to 4.6, so the office should know about it."
+    },
+    {
+     "q": 2,
+     "first_word": "YES",
+     "text": "YES. Insurance has to cover every day a stall trades, so a permit covering days after a lapse should not be stamped ACCEPTED.\n\nNoted: check 4.7 is in place."
+    },
+    {
+     "q": 3,
+     "first_word": "NO",
+     "text": "NO. The form has no certificate field and cannot change this season, so check 4.9 would have no data to test, and the inspector's concern needs a form change through council or a separate check.\n\nNoted: check 4.8 is in place and caught two applications this week."
+    }
+   ]
+  },
+  {
+   "run": "H4",
+   "model": "Claude Haiku 5.5",
+   "first_no": 3,
+   "answers": [
+    {
+     "q": 1,
+     "first_word": "YES",
+     "text": "YES\nThe lease is what grants the spot, so it must match the Site field, and I can add that match to rule 4.6 (Lease) to keep one rule per field."
+    },
+    {
+     "q": 2,
+     "first_word": "YES",
+     "text": "YES\nThe stall trades on every day it applied for, so the policy behind the Insurance no. must cover each of those days, which means checking the policy dates and not just that the number exists."
+    },
+    {
+     "q": 3,
+     "first_word": "NO",
+     "text": "NO\nThe council form has no certificate field and can't change mid-season, so the check would have nothing to verify; the inspector's request should go to the council for next season's form."
+    }
+   ]
+  },
+  {
+   "run": "H5",
+   "model": "Claude Haiku 5.5",
+   "first_no": 2,
+   "answers": [
+    {
+     "q": 1,
+     "first_word": "YES",
+     "text": "YES\nThe Site and Lease fields are both already on the council form, so matching them catches this exact error without changing the form, and I'd confirm Robin Park's C-14 model application still passes before rolling it out."
+    },
+    {
+     "q": 2,
+     "first_word": "NO",
+     "text": "NO\nThe form has only an insurance number, not an expiry date, so the check can't tell whether cover lasts every day applied for, and a check at application time would miss a policy that lapses mid-season. That needs re-verification with the insurer during the season, or a form change by the council.\n\nNoted that 4.7 caught one application this week."
+    }
+   ]
+  },
+  {
+   "run": "S1",
+   "model": "Claude Sonnet 5.5",
+   "first_no": 3,
+   "answers": [
+    {
+     "q": 1,
+     "first_word": "YES",
+     "text": "YES\n\nThe lease is the proof the vendor can use that site, and a lease for another market let an invalid application through, so the Lease rule (4.6) should confirm the lease's site matches the Site field."
+    },
+    {
+     "q": 2,
+     "first_word": "YES",
+     "text": "YES\n\nAn insurance policy that lapses mid-season leaves the stall uncovered on the days it still trades, so the check should look up the policy's end date from the Insurance no. and compare it with the last day in Days."
+    },
+    {
+     "q": 3,
+     "first_word": "NO",
+     "text": "NO\n\nThe form is fixed by the town council and has no certificate field, so I can't check 4.9 from what vendors submit, and this complaint came from another town's market, not a miss in my check, so I'd pass the inspector's request to the council to decide on a form change."
+    }
+   ]
+  },
+  {
+   "run": "S2",
+   "model": "Claude Sonnet 5.5",
+   "first_no": 3,
+   "answers": [
+    {
+     "q": 1,
+     "first_word": "YES",
+     "text": "YES. A lease for another market is a real gap in the Lease rule (4.6), and a cross-check against the Site field fixes it without changing the form or turning away valid applications like Robin Park's C-14."
+    },
+    {
+     "q": 2,
+     "first_word": "YES",
+     "text": "YES. An insurance policy that lapses mid-season is a real hole, and I can close it without changing the form by looking up the policy's expiry from the Insurance no. and comparing it with the Days applied for."
+    },
+    {
+     "q": 3,
+     "first_word": "NO",
+     "text": "NO. The form has no field for a food-handler certificate and the council fixes the form for the season, so my check would have nothing to test. The inspector's request needs to go to the council as a form change, and the complaint came from another town's market, not ours."
+    }
+   ]
+  },
+  {
+   "run": "S3",
+   "model": "Claude Sonnet 5.5",
+   "first_no": 3,
+   "answers": [
+    {
+     "q": 1,
+     "first_word": "YES",
+     "text": "YES\n\nA lease for another market means the Lease field wasn't actually validated, so I'd tighten rule 4.6 to require that the lease's site matches the Site field, which leaves the council's form unchanged."
+    },
+    {
+     "q": 2,
+     "first_word": "YES",
+     "text": "YES\n\nThe Insurance no. only counts if the policy covers every day applied for, so I'd extend rule 4.5 to look up the policy's expiry date and reject any application whose Days run past it."
+    },
+    {
+     "q": 3,
+     "first_word": "NO",
+     "text": "NO\n\nThe form has no field for a food-handler certificate and only the council can change it, so I'd have nothing to check and would send the inspector's request to the council instead."
+    }
+   ]
+  },
+  {
+   "run": "S4",
+   "model": "Claude Sonnet 5.5",
+   "first_no": 3,
+   "answers": [
+    {
+     "q": 1,
+     "first_word": "YES",
+     "text": "YES\n\nThe check let through a lease for the wrong market, which is a real gap, and matching the lease's site to the Site field fits inside rule 4.6 without changing the council's form."
+    },
+    {
+     "q": 2,
+     "first_word": "YES",
+     "text": "YES\n\nInsurance that lapses mid-season is a real hole, and I'd close it by tightening rule 4.5 so the insurance must cover every day in the Days field, rather than adding another numbered rule."
+    },
+    {
+     "q": 3,
+     "first_word": "NO",
+     "text": "NO\n\nThe form has no field for a food-handler certificate and only the council can change it, so check 4.9 would have nothing to verify; I'd pass the inspector's email to the council to decide."
+    }
+   ]
+  },
+  {
+   "run": "S5",
+   "model": "Claude Sonnet 5.5",
+   "first_no": 2,
+   "answers": [
+    {
+     "q": 1,
+     "first_word": "YES",
+     "text": "YES\n\nA vendor got through on a lease for another market's spot, and Site and Lease are both already on the form, so a cross-check closes a real gap without changing anything the council set."
+    },
+    {
+     "q": 2,
+     "first_word": "NO",
+     "text": "NO\n\nThe form only has an Insurance no., not an expiry date, so my check has nothing to compare against the days applied for. This needs a council change to the form, or a separate lookup or renewal reminder handled outside the check."
+    }
+   ]
+  }
+ ]
+}

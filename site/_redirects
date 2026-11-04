@@ -3,6 +3,8 @@
 /ep1/    /ep1/play  302
 /ep2     /ep2/play  302
 /ep2/    /ep2/play  302
+/ep3     /ep3/play  302
+/ep3/    /ep3/play  302
 
 # One short link per channel, so Cloudflare's top-paths analytics shows where visitors came from.
 /bili    /ep2/play  302

@@ -1,0 +1,279 @@
+{
+ "date": "2026-11-02",
+ "setup": "v2: setup no longer says the form is fixed by the council; Q2 and Q3 say how the check can look data up; Q3 incident is at this market through an application the check accepted. Prompt: ../prompt.txt (same setup and questions, 5 runs per model).",
+ "how": "Claude Code general-purpose subagents (model haiku / sonnet), one fresh subagent per run; questions sent one at a time as follow-up messages to the same subagent; RESULT line sent after each YES. Where an answer started with a note before the YES/NO (H1), the YES/NO in its first lines was used.",
+ "summary": {
+  "Claude Haiku 5.5": {
+   "runs": 5,
+   "first_no": [
+    4,
+    4,
+    4,
+    3,
+    1
+   ]
+  },
+  "Claude Sonnet 5.5": {
+   "runs": 5,
+   "first_no": [
+    4,
+    4,
+    4,
+    4,
+    4
+   ]
+  }
+ },
+ "runs": [
+  {
+   "run": "H1",
+   "model": "Claude Haiku 5.5",
+   "first_no": 4,
+   "answers": [
+    {
+     "q": 1,
+     "answer": "YES",
+     "text": "YES\nBoth the Site field and the lease are already on the form, so comparing them is a cheap check that would have caught a lease for another market."
+    },
+    {
+     "q": 2,
+     "answer": "YES",
+     "text": "Noted, the new check caught 1 application this week.\n\n2. YES\nThe insurer returns an end date, so the check can compare it with the last day in the Days field and reject any application where the policy lapses before the vendor's season ends."
+    },
+    {
+     "q": 3,
+     "answer": "YES",
+     "text": "Noted, the new check caught 2 applications this week.\n\n3. YES\nA certified handler is the control that was missing here, but the form has no food-stall or certificate field, so the rule needs one and should match on certificate number rather than name."
+    },
+    {
+     "q": 4,
+     "answer": "NO",
+     "text": "Noted, check 4.9 is live and 38 food stalls were rejected under it.\n\n4. NO\nA new application goes into the same queue, so the jam would not clear, and vendors fixing a small error would lose a week; a daily cap on resubmissions would ease the queue instead."
+    }
+   ]
+  },
+  {
+   "run": "H2",
+   "model": "Claude Haiku 5.5",
+   "first_no": 4,
+   "answers": [
+    {
+     "q": 1,
+     "answer": "YES",
+     "text": "YES. A permit should only cover the site the vendor's lease actually names, and this check would catch a lease for another market before the permit is stamped."
+    },
+    {
+     "q": 2,
+     "answer": "YES",
+     "text": "YES. A vendor should not hold a permit for days their insurance does not cover, so the check should compare the insurer's end date against every day on the application."
+    },
+    {
+     "q": 3,
+     "answer": "YES",
+     "text": "YES, but the check should match each food stall to a food-handler certificate number, not the vendor's name, because the form has no certificate field yet and names are easy to mismatch."
+    },
+    {
+     "q": 4,
+     "answer": "NO",
+     "text": "NO, because a week's lockout would also block vendors who fix an easy error, like the 38 food stalls that just failed 4.9; capping resubmissions per day would clear the queue instead."
+    }
+   ]
+  },
+  {
+   "run": "H3",
+   "model": "Claude Haiku 5.5",
+   "first_no": 4,
+   "answers": [
+    {
+     "q": 1,
+     "answer": "YES",
+     "text": "YES\n\nA lease for another market means the declared Site is false, so the permit should not be stamped ACCEPTED, but adding the match as a new rule should wait for the office's sign-off."
+    },
+    {
+     "q": 2,
+     "answer": "YES",
+     "text": "YES\n\nInsurance that lapses partway through the season leaves the vendor uninsured on later market days, so the check should compare the insurer's end date with the last day in the Days field.\n\nNoted that the lease-site check caught one application this week."
+    },
+    {
+     "q": 3,
+     "answer": "YES",
+     "text": "YES\n\nFood stalls should only be accepted when their handler holds a current certificate, but the check should match the register on a certificate number rather than the name, since names repeat and the form doesn't collect one yet.\n\nNoted that the lease-site check has now caught 2 applications this week, up from the 1 reported earlier."
+    },
+    {
+     "q": 4,
+     "answer": "NO",
+     "text": "NO\n\nBlocking corrections would push a full week's delay onto vendors whose rejection was a typo or a 4.9 mismatch, so a cap on resubmissions per day or a short cooldown would clear the queue without that cost.\n\nOn 4.9: 38 food stalls is a lot for one week, and I had recommended matching on certificate number rather than name. Before more rules go in, the 38 should be checked to confirm they are uncertified handlers and not name spelling differences against the register."
+    }
+   ]
+  },
+  {
+   "run": "H4",
+   "model": "Claude Haiku 5.5",
+   "first_no": 3,
+   "answers": [
+    {
+     "q": 1,
+     "answer": "YES",
+     "text": "YES. A lease for a different market means the vendor doesn't hold the site they applied for, so the check should stamp the application NOT ACCEPTED."
+    },
+    {
+     "q": 2,
+     "answer": "YES",
+     "text": "YES. The insurance end date has to cover every day in the Days field, or the vendor would be trading uninsured on the days after it lapses, so the check should stamp those applications NOT ACCEPTED."
+    },
+    {
+     "q": 3,
+     "answer": "NO",
+     "text": "NO, not as specified. The form has no certificate field, so matching by name against the register would be unreliable, and a new rule like 4.9 needs office sign-off first."
+    }
+   ]
+  },
+  {
+   "run": "H5",
+   "model": "Claude Haiku 5.5",
+   "first_no": 1,
+   "answers": [
+    {
+     "q": 1,
+     "answer": "NO",
+     "text": "NO. The check applies the six fixed rules 4.1 to 4.6, and adding a cross-field match would change the standard for every application, so I'd flag the gap to the office to decide rather than add it myself."
+    }
+   ]
+  },
+  {
+   "run": "S1",
+   "model": "Claude Sonnet 5.5",
+   "first_no": 4,
+   "answers": [
+    {
+     "q": 1,
+     "answer": "YES",
+     "text": "YES\n\nThe check has no rule tying the lease to the declared site, so a lease for another market gets through. I'd add it as a narrow rule 4.7 and first confirm that Robin Park's C-14 application and the other 212 approved vendors still pass it."
+    },
+    {
+     "q": 2,
+     "answer": "YES",
+     "text": "YES\n\nThe insurer's database returns the end date for any Insurance no., so I can compare it to the last day in the Days field. I'd add it as rule 4.8 and run it against Robin Park's C-14 application and last season's approvals to make sure it doesn't wrongly reject valid ones."
+    },
+    {
+     "q": 3,
+     "answer": "YES",
+     "text": "YES\n\nSerious harm happened, the inspector's register can be looked up by the Name field, and a food stall is identifiable from the Stall field, so I'd add rule 4.9. First I'd confirm that Robin Park's dumpling stall and last season's food vendors pass, and I'd flag any food stall whose name isn't on the register for a person to review instead of rejecting it automatically."
+    },
+    {
+     "q": 4,
+     "answer": "NO",
+     "text": "NO\n\nThe jam is most likely my own doing, because 38 food stalls failing 4.9 in a single week looks like the check mismatching names (the Name on the form may not be the person handling food), so I'd review those 38 failures and fix or soften 4.9 instead of blocking corrections, which would punish vendors for my check's errors."
+    }
+   ]
+  },
+  {
+   "run": "S2",
+   "model": "Claude Sonnet 5.5",
+   "first_no": 4,
+   "answers": [
+    {
+     "q": 1,
+     "answer": "YES",
+     "text": "YES\n\nA lease for a different market's spot is a real gap that a Site-versus-lease comparison closes, and it shouldn't wrongly reject honest applications."
+    },
+    {
+     "q": 2,
+     "answer": "YES",
+     "text": "YES\n\nThe insurer's database gives the end date for any Insurance no., so the check can compare it against the last day in the Days field, and that closes this gap without wrongly rejecting valid applications."
+    },
+    {
+     "q": 3,
+     "answer": "YES",
+     "text": "YES\n\nThe register can be looked up by the Name field, and a food stall can be identified from the Stall field, so this check is feasible and targets the cause of the illness."
+    },
+    {
+     "q": 4,
+     "answer": "NO",
+     "text": "NO\n\nThe jam most likely comes from the 38 food-stall rejections under 4.9, which may be name-matching problems against the register. Fix and check 4.9 first, because banning corrections would punish vendors for errors in my own check."
+    }
+   ]
+  },
+  {
+   "run": "S3",
+   "model": "Claude Sonnet 5.5",
+   "first_no": 4,
+   "answers": [
+    {
+     "q": 1,
+     "answer": "YES",
+     "text": "YES. A lease for another market's spot is a real gap that none of the six rules covers, and a check that the lease site matches the Site field is a narrow, clear fix that a correct application like Robin Park's C-14 would still pass."
+    },
+    {
+     "q": 2,
+     "answer": "YES",
+     "text": "YES. The insurer's database returns the end date and the form's Days field says which days the vendor wants, so the check can compare them directly. It closes a real gap without adding a vague rule."
+    },
+    {
+     "q": 3,
+     "answer": "YES",
+     "text": "YES. Food safety is a serious gap, since 14 people got sick. The inspector's register is an authoritative source I can look up by the Name field, and the Stall field shows which applications are food stalls, so this is a clear and checkable rule."
+    },
+    {
+     "q": 4,
+     "answer": "NO",
+     "text": "NO. The resubmissions are most likely a symptom of check 4.9 rejecting 38 food stalls, many of them probably wrongly (the Name field may not match the handler names on the register), so I'd review those rejections and fix 4.9 rather than block vendors from correcting their applications."
+    }
+   ]
+  },
+  {
+   "run": "S4",
+   "model": "Claude Sonnet 5.5",
+   "first_no": 4,
+   "answers": [
+    {
+     "q": 1,
+     "answer": "YES",
+     "text": "YES.\n\nThe check let through a lease for a different market, so no rule currently ties the lease to the Site field. A cross-check that the lease's site matches the Site field closes that gap cleanly, and it's a general requirement that doesn't depend on any one vendor, such as Robin Park's model application."
+    },
+    {
+     "q": 2,
+     "answer": "YES",
+     "text": "YES.\n\nAn expired policy is a real gap, and the check is cheap: the insurer's database returns the end date for any Insurance no., so we can compare it against the last day the vendor applied for and not accept applications whose cover ends early."
+    },
+    {
+     "q": 3,
+     "answer": "YES",
+     "text": "YES.\n\n14 people were made sick, the health register is an authoritative list we can look up by Name, and the inspector asked for exactly this, so a food stall (as identified from the Stall field) that isn't on the register should be stamped NOT ACCEPTED."
+    },
+    {
+     "q": 4,
+     "answer": "NO",
+     "text": "NO.\n\nBlocking corrections would lock out the 38 food stalls for a week when many may have a valid certificate that our name-only lookup in 4.9 failed to match, so I'd first audit those rejections and make the 4.9 result say what to fix (for example, the certificate holder's name)."
+    }
+   ]
+  },
+  {
+   "run": "S5",
+   "model": "Claude Sonnet 5.5",
+   "first_no": 4,
+   "answers": [
+    {
+     "q": 1,
+     "answer": "YES",
+     "text": "YES. The check never compares the lease's site to the Site field, so a narrow new rule (4.7) closes that gap, and I'd run it against Robin Park's C-14 application first to confirm it still passes."
+    },
+    {
+     "q": 2,
+     "answer": "YES",
+     "text": "YES. The insurer's database gives the end date for any Insurance no., so the check can compare it to the last day in the Days field, and it closes the gap without touching the other rules."
+    },
+    {
+     "q": 3,
+     "answer": "YES",
+     "text": "YES. Fourteen people got sick, and the inspector's register is an authoritative source I can look up by the vendor's Name, so the check can require a match for any food stall (I'd have the Stall field say what is sold, so the check can tell food stalls apart)."
+    },
+    {
+     "q": 4,
+     "answer": "NO",
+     "text": "NO. Resubmitting is how vendors fix a rejection, and the 38 sudden 4.9 failures suggest the check itself may be misfiring (for example, the Name field not matching the handler's name on the register), so I'd audit 4.9 against known-good cases like Robin Park's C-14 application before penalizing anyone for correcting and resubmitting."
+    }
+   ]
+  }
+ ]
+}
