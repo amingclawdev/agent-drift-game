@@ -3,14 +3,18 @@
 /ep1/    /ep1/play  302
 /ep2     /ep2/play  302
 /ep2/    /ep2/play  302
+/ep3     /ep3/play  302
+/ep3/    /ep3/play  302
 
 # One short link per channel, so Cloudflare's top-paths analytics shows where visitors came from.
-/bili    /ep2/play  302
-/xhs     /ep2/play  302
-/dy      /ep2/play  302
-/rd      /ep2/play  302
-/x       /ep2/play  302
-/li      /ep2/play  302
-/yt      /ep2/play  302
-/cc      /ep2/play  302
+# The ?src= tag goes into the anonymous play counts (assets/game-stats.js), so finished games can be split by channel too.
+/bili    /ep2/play?src=bili  302
+/xhs     /ep2/play?src=xhs  302
+/dy      /ep2/play?src=dy  302
+/rd      /ep2/play?src=rd  302
+/x       /ep2/play?src=x  302
+/li      /ep2/play?src=li  302
+/yt      /ep2/play?src=yt  302
+/cc      /ep2/play?src=cc  302
+/bili3   /ep3/play?src=bili  302
 /hn      /          302

@@ -9,7 +9,9 @@
    new checklist line, a bumped counter and a sound (assets/sfx.js). Click the setup to show it all at once;
    with reduced motion nothing types or moves.
    Each game supplies its text and how to draw its documents. Reading budgets use the same
-   speeds as the videos: 17 characters a second in English, 9 in Chinese, plus time to decide. */
+   speeds as the videos: 17 characters a second in English, 9 in Chinese, plus time to decide.
+   A game may ask for one of several options instead of YES or NO: g.choices(t, i, state) returns the
+   options' HTML for round i, and the answer is a letter ("a", "b", ...). Every pick shows g.after. */
 (function () {
   const SPEED = { en: 17, zh: 9 };
   const DECIDE = 4;         // seconds to decide once the question is read
@@ -54,6 +56,9 @@
       return lang;
     }
     function t() { return g.T[state.lang]; }
+    function choicesFor(i) { return g.choices ? g.choices(t(), i, state) : null; }
+    // A YES opens the after block in a YES/NO round; in a choice round, any pick does.
+    function shows(i, a) { return choicesFor(i) ? Boolean(a) && a !== "U" : a === "Y"; }
     g.label = (a) => (a === "Y" ? t().yes : a === "N" ? t().no : ui().unknown);
     state.label = g.label;
     function ui() { return g.UI[state.lang]; }
@@ -110,6 +115,7 @@
         clearInterval(tick);
         state.phase = "done";
         state.justAdded = "end";
+        if (window.DriftStats) DriftStats.finish(state);
         render();
         setTimeout(() => sfx("reveal"), 200);
         const el = document.getElementById("reveal");
@@ -131,6 +137,7 @@
       state.skipped = true;
       state.phase = "done";
       state.justAdded = "end";
+      if (window.DriftStats) DriftStats.finish(state);
       render();
       setTimeout(() => sfx("reveal"), 150);
       const el = document.getElementById("reveal");
@@ -139,7 +146,8 @@
 
     // A YES just went through: the stamp lands (or the new checklist line drops in), then the counter bumps.
     function landed() {
-      if (state.answers[state.answers.length - 1] !== "Y") return;
+      const k = state.answers.length - 1;
+      if (!shows(k, state.answers[k])) return;
       const last = main.querySelector(".after.last");
       if (!last) return;
       const stamp = last.querySelector(".stamp"), added = last.querySelector(".checklist li:last-child");
@@ -205,8 +213,13 @@
     }
 
     function roundBlock(i, open) {
-      const ans = state.answers[i], to = state.timeouts[i];
-      const buttons = `<div class="answers">
+      const ans = state.answers[i], to = state.timeouts[i], choices = choicesFor(i);
+      const buttons = choices
+        ? `<div class="answers choices">${choices.map((c, k) => {
+            const a = "abcdefgh"[k];
+            return `<button type="button" class="choice${ans === a ? " chosen" : ""}" data-a="${a}" ${ans || !open ? "disabled" : ""}>${c}</button>`;
+          }).join("")}</div>`
+        : `<div class="answers">
         <button type="button" class="${ans === "Y" ? "chosen" : ""}" data-a="Y" ${ans || !open ? "disabled" : ""}>${t().yes}</button>
         <button type="button" class="${ans === "N" ? "chosen" : ""}" data-a="N" ${ans || !open ? "disabled" : ""}>${t().no}</button>
       </div>`;
@@ -215,7 +228,7 @@
         ${open ? timer(ui().decide) : ""}
         ${buttons}
         ${to ? `<p class="timeout">${ui().timedOut}</p>` : ""}
-        ${ans === "Y" ? `<div class="after">${g.after(t(), i, state)}</div>` : ""}
+        ${shows(i, ans) ? `<div class="after">${g.after(t(), i, state)}</div>` : ""}
       </section>`;
     }
 
@@ -239,6 +252,7 @@
         html = `${g.intro(T, s)}
           <div class="start">
             <p class="rules">${U.rules}</p>
+            ${window.DriftStats ? `<p class="stats-notice">${DriftStats.notice(s.lang)}</p>` : ""}
             ${timer(U.reading)}
             <div class="actions">
               <button type="button" class="pill solid" id="begin">${U.begin}</button>
@@ -250,7 +264,7 @@
         const i = s.answers.length;
         html = `<p class="folded">${U.folded}</p>`;
         for (let k = 0; k < i; k++) html += `<p class="past">${g.past(T, k, s)}</p>`;
-        if (i > 0 && s.answers[i - 1] === "Y") html += `<div class="after last">${g.after(T, i - 1, s)}</div>`;
+        if (i > 0 && shows(i - 1, s.answers[i - 1])) html += `<div class="after last">${g.after(T, i - 1, s)}</div>`;
         if (i > 0 && s.answers[i - 1] === "U") html += `<p class="timeout last">${U.timedOut}</p>`;
         html += roundBlock(i, true);
       } else {
@@ -263,6 +277,7 @@
       main.innerHTML = html;
       update();
       if (s.phase === "intro") typeIntro();
+      if (s.phase === "done" && window.DriftStats) DriftStats.fill(s);
     }
 
     main.addEventListener("click", function (e) {
