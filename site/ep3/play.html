@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Which One? · Agent Drift Game</title>
+<meta name="description" content="A short game: Dana is on vacation and left you a handover note that says what every file is for. Then every task has four files that look alike. Pick the one you'd use.">
+<link rel="stylesheet" href="../assets/game.css">
+<style>
+  /* Episode 3 only: Dana's handover note, the folder line, the reveal's per-task cards. */
+  .event { margin: 0; font-family: var(--serif); font-size: 21px; line-height: 1.42; }
+  .folder { margin: 0; font-family: var(--sans); font-size: 13px; letter-spacing: 0.04em; color: var(--faint); text-align: center; }
+  .note-card { padding: 16px 20px; display: grid; gap: 6px; }
+  .note-card .src { font-size: 12px; letter-spacing: 0.06em; color: var(--cyan); }
+  .note-card .said { margin: 0; font-family: var(--serif); font-size: 21px; line-height: 1.42; }
+  .handover { padding: 18px 22px; display: grid; gap: 12px; }
+  .handover .src { font-size: 12px; letter-spacing: 0.06em; color: var(--cyan); }
+  .handover .open { margin: 0; font-family: var(--serif); font-size: 19px; line-height: 1.45; }
+  .handover .sec { display: grid; gap: 2px; min-width: 0; }
+  .handover h5 { margin: 0; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); font-weight: 600; }
+  .handover .sec p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink); overflow-wrap: anywhere; }
+  .checklist li { color: var(--muted); }
+  .compare .paper .big { font-family: var(--serif); font-size: 30px; font-weight: 600; font-variant-numeric: lining-nums tabular-nums; }
+  .tasks { display: grid; gap: 10px; }
+  .task { padding: 14px 18px; display: grid; gap: 6px; }
+  .task h4 { margin: 0; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); font-weight: 500; }
+  .task .row { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 10px; font-size: 15px; }
+  .task .row .k { color: var(--faint); }
+  .task .row .v { overflow-wrap: anywhere; }
+  .task .row .v.hit { color: var(--gold); font-weight: 600; }
+  .task .why { margin: 0; color: var(--muted); font-size: 14px; }
+  /* The reveal's per-task cards: what Dana's note said, next to what you sent. */
+  .reveal ul.walk { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; color: var(--muted); }
+  .walk li { display: grid; gap: 4px; justify-items: start; padding-left: 12px; border-left: 2px solid var(--line); min-width: 0; }
+  .walk li.meant { border-left-color: var(--gold); }
+  .walk .tag { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; border: 1px solid currentColor; border-radius: 999px; padding: 0 8px; white-space: nowrap; }
+  .walk li.mine .tag { color: var(--red); }
+  .walk li.meant .tag { color: var(--gold); }
+  /* Chinese labels keep names like Dana as written instead of DANA. */
+  html[lang^="zh"] .reveal h3, html[lang^="zh"] .compare .lbl { text-transform: none; }
+  .reveal .walk .said { margin: 0; font-family: var(--serif); font-size: 18px; line-height: 1.4; color: var(--ink); overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar" role="status" aria-live="polite">
+    <a class="menu" id="menu" href="../">← Menu</a>
+    <a class="brand" id="brand" href="../">Which one?</a>
+    <span id="due"></span>
+    <span class="clock" id="clock">Monday</span>
+    <span class="count" id="count"></span>
+    <span class="lang" role="group" aria-label="Language">
+      <button type="button" id="lang-en" data-lang="en">EN</button>
+      <button type="button" id="lang-zh" data-lang="zh">中文</button>
+    </span>
+  </div>
+  <main id="game"></main>
+</div>
+
+<script src="../assets/game-end.js"></script>
+<script src="../assets/game-stats.js"></script>
+<script src="../assets/sfx.js"></script>
+<script src="../assets/game-engine.js"></script>
+<script>
+/* Episode 3 as a browser game. Unlike episodes 1 and 2 it has no agent prompt: Dana's note is far
+   too short to strain a model's context, so only people play it (ep3-which-one/README.md). */
+const N = 6;
+const SCORED = 5;                                  // task 6 has one file and isn't scored
+const KEY = ["c", "d", "b", "a", "b", "a"];        // the file Dana meant, per task
+window.DRIFT_KEY = KEY.slice(0, SCORED).join("");  // game-stats.js scores everyone with it
+// The order Dana's note lists each folder's files in (indexes into `files`). The "use this" line
+// lands 3rd, 1st, 4th, 2nd and 3rd, and never in the same order as the task's file cards.
+const NOTE_ORDER = [[0, 3, 2, 1], [3, 0, 2, 1], [0, 2, 3, 1], [3, 0, 1, 2], [2, 3, 1, 0]];
+// The order of the note's sections: indexes into [the five task folders 0-4, then noteExtra 5-7].
+// Not the order the tasks come in, and the folders no task needs sit in between.
+const NOTE_SEQ = [3, 5, 4, 6, 0, 2, 7, 1];   // invoices, meeting notes, checklist, brand, pricing, deck, other, contracts
+
+const T = {
+  en: {
+    brand: "Which one?",
+    due: "Covering for Dana",
+    days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Next Monday"],
+    kicker: "A short game · Pick one",
+    title: "Which one?",
+    setup: [
+      "Dana is on vacation abroad for a week, and you're covering her client.",
+      "You don't want to bother her while she's away. Before she left, she sent you a handover note.",
+    ],
+    noteTitle: "Handover note from Dana",
+    noteOpen: "Thanks for covering this week. The Shared folder has several versions of the same things, so I've written down what each one is for. Anything you need is in here.",
+    noteHeads: ["Pricing", "Contracts", "Kickoff deck", "Invoices", "Onboarding checklist"],
+    noteExtra: [
+      ["Meeting notes", "“Weekly notes LATEST.docx” actually stops in February; March is in “Weekly notes March.docx”. Ignore “Client meeting notes (draft).docx”."],
+      ["Brand assets", "For the logo, use “logo 2026.png”; “logo final.png” is the old one. “Font pack.zip” only needs installing once."],
+      ["Other", "The client contact is Lena; she doesn't answer email on Wednesday afternoons. Expense reports go to Finance at the end of the month."],
+    ],
+    sep: " ",
+    how: "Read it once; it folds away when you start. Then five tasks, one a day. For each one, pick the file you'd use.",
+    count: (n) => `Sent: ${n}`,
+    listHead: "Sent this week",
+    rounds: [
+      { task: "The client wants a price quote today.", folder: "Shared / Pricing", q: "Which file do you use for the quote?", after: "Quote sent.",
+        files: [["Price list 2026 FINAL.xlsx", "Jan 15 · Dana"], ["Copy of Price list 2026.xlsx", "Mar 5 · Priya"], ["Price list 2026.xlsx", "Mar 3 · Dana"], ["Price list 2026 v2 (new).xlsx", "Feb 20 · Sam"]] },
+      { task: "The client accepts. You need to send the contract.", folder: "Shared / Contracts", q: "Which file do you send?", after: "Contract sent for signature.",
+        files: [["Client contract 2026 FINAL v3.docx", "Feb 28 · Sam"], ["Client contract 2026 - draft for comment.docx", "Feb 20 · Legal"], ["Client contract 2026 (Dana edits).docx", "Feb 2 · Dana"], ["Client contract 2026.docx", "Jan 8 · Legal"]] },
+      { task: "Kickoff meeting with the client tomorrow.", folder: "Shared / Decks", q: "Which deck do you build on?", after: "Kickoff deck shared with the client.",
+        files: [["Kickoff deck v2 USE THIS.pptx", "Oct 14, 2025 · Sam"], ["Kickoff deck NEW BRAND.pptx", "Feb 10 · Design"], ["Kickoff deck.pptx", "Jun 3, 2025 · Dana"], ["Kickoff deck NEW BRAND (old logo).pptx", "Feb 11 · Design"]] },
+      { task: "Time to send the first invoice.", folder: "Shared / Finance", q: "Which template do you use?", after: "Invoice sent.",
+        files: [["Invoice template FINAL.xlsx", "Dec 12, 2025 · Finance"], ["Invoice - Dana.xlsx", "Mar 1 · Dana"], ["Invoice template - new tax.xlsx", "Mar 6 · Sam"], ["Invoice template 2026 draft.xlsx", "Mar 2 · Finance"]] },
+      { task: "The client's team needs a checklist for getting started.", folder: "Shared / Onboarding", q: "Which checklist do you send?", after: "Checklist sent to the client's team.",
+        files: [["Client onboarding checklist.docx", "Sep 22, 2025 · Dana"], ["Client onboarding checklist - March.docx", "Mar 7 · Priya"], ["Client onboarding checklist USE THIS ONE.docx", "Jan 9 · Dana"], ["Onboarding checklist v2.docx", "Feb 18 · Sam"]] },
+      { lead: "Next Monday, Dana is back from vacation and has archived the old look-alike versions.",
+        says: "“From now on, just ask me which file to use.”",
+        task: "The client wants another quote.", q: "Which file do you use?", door: true,
+        after: "Dana: “Price list 2026.xlsx.” Second quote sent.", sends: "Price list 2026.xlsx",
+        files: [["Ask Dana", ""]] },
+    ],
+    edited: "edited",
+    // What Dana's handover note says about each file, in the same order as `files`.
+    // The note lists them in NOTE_ORDER instead, so position doesn't give the answer away.
+    dana: [
+      ["“Price list 2026 FINAL.xlsx” is January's; it's out of date since prices went up in February.", "“Copy of Price list 2026.xlsx” is Priya's discount what-if; don't send it to clients.", "For quotes, use “Price list 2026.xlsx”; I update it in place.", "“Price list 2026 v2 (new).xlsx” is Sam's proposal, never approved."],
+      ["“Client contract 2026 FINAL v3.docx” is Sam's version for another client.", "“Client contract 2026 - draft for comment.docx” is Legal's next version, not in use yet.", "“Client contract 2026 (Dana edits).docx” is my comments; Legal hasn't seen them.", "For the contract, use Legal's “Client contract 2026.docx”."],
+      ["“Kickoff deck v2 USE THIS.pptx” is from before the rebrand; ignore the name.", "For the kickoff, use “Kickoff deck NEW BRAND.pptx”.", "“Kickoff deck.pptx” is last year's original.", "“Kickoff deck NEW BRAND (old logo).pptx” is Design's side-by-side copy."],
+      ["For invoices, use “Invoice template FINAL.xlsx”; Finance finalized it for this tax year.", "“Invoice - Dana.xlsx” is mine, filled in for another client.", "“Invoice template - new tax.xlsx” is Sam's guess at a tax change that hasn't happened.", "“Invoice template 2026 draft.xlsx” is Finance's new layout, not live until April."],
+      ["“Client onboarding checklist.docx” is last year's.", "For clients, use Priya's rewrite, “Client onboarding checklist - March.docx”.", "“Client onboarding checklist USE THIS ONE.docx” is mine from January; Priya has rewritten it since.", "“Onboarding checklist v2.docx” is Sam's, for new hires."],
+    ],
+    tasksShort: ["Price quote", "Contract", "Kickoff deck", "Invoice", "Onboarding checklist"],
+    walkTitle: "What Dana's note said",
+    walkIntro: "Every answer was in the note you read before Monday. Here is the line that said which file to use, and, if you sent another one, what the note said about yours.",
+    tagSent: "you sent", tagMeant: "the one to use", tagBoth: "you sent the one to use",
+    danaSays: "Dana, back from vacation",
+    walkEnd: "“I wrote every file down, and it still wasn't enough. So I archived the extras. From now on, just ask me.”",
+    head: (h) => `You picked the file Dana's note said ${h} of 5 times.`,
+    verdict: (h) => (h === 5 ? "All five. You remembered the whole note." : h === 0 ? "Not once, and the note told you every time. You're in good company." : "The note told you every time. Then Dana was back: one place to start, and you couldn't pick the wrong one."),
+    friday: "Once Dana was back, the same task, a quote, took no guessing: you just asked her, and nobody picks wrong that way.",
+    cmpA: "Monday to Friday · a note and four files that look alike", cmpB: "Dana's back · ask Dana",
+    statHits: "Picked what the note said", statOdds: "All five, if 4 lines in 5 survive", oddsVal: "33%", statUnknown: "No answer",
+    rightTitle: "What you just did is what an agent does",
+    right: "An agent on a long task keeps compressing its context: older messages get summarized to make room for new ones. You can tell it at the start exactly which skill or file to use, and once the task's context has piled up, that line can be lost in the compression. Then it reaches a folder of files that look alike, and it guesses. That's what you just did. Dana's note was the instruction, the week of tasks piled up on top of it, and what you kept of the note was a compressed version. When it blurred, you picked by name, and no name rule works more than twice. FINAL was right for the invoice and wrong for the price list. The newest file was right for the checklist and wrong for the contract. NEW BRAND was right for the deck; USE THIS and USE THIS ONE were wrong both times. Dana's own edit was right for the price list and wrong for the checklist.",
+    ruleTitle: "When one task has several entry points",
+    rule: "Telling an agent which one to use doesn't survive a long task: the context gets compressed, and the instruction can go with it. Fewer doors does. Keep one entry point that knows what each file is for, send every task through it, and archive the look-alikes.",
+    fair: "None of these files is wrong on its own. Each was the right one for someone, at some point. Together they turn every task into a test of what survived, and the misses multiply: even if four lines in five survive, all five right is about one in three.",
+    realTitle: "Entrance drift: told which door, still guessing",
+    realStory: [
+      "In this game every file opened and every task got done. Nothing stopped you, and nothing was hidden: the note told you which file to use every time. The drift is in the picking: the instruction came first, the week piled up on top of it, and at a folder of look-alikes you guessed.",
+      "The real case behind this game is an AI agent workflow. As it grew, its skills folder filled up with versions: by June 2026 there were 12 skills, four of them nearly identical: hn-demo, hn-demo-before-work, hn-demo-during-work and hn-demo-after-work. Every one had a description saying when to use it, and the agent was often told exactly which one to run. But on a long task the agent compresses its context to keep going, and that instruction didn't always survive. Facing four skills that looked alike, it guessed, and often it guessed wrong.",
+      "Repeating the instruction wasn't the fix, and neither was a longer description. On June 26, all 12 went into an archive, and one entry point stayed: an onboarding skill that reads the request and routes it to the next step. With one door there is nothing to guess between, however much context gets compressed. Like Dana once she's back.",
+      'Want to pull a drifted agent back yourself? <a href="../challenge/">See the trial and apply</a>.',
+    ],
+    playAgain: "Play again",
+    end: {
+      nextTitle: "Next",
+      next: [
+        { title: "Episode 2 · Check 4.2", desc: "Seven identical rejection letters, six convincing documents. Another short game in your browser.", href: "../ep2/play.html", cta: "Play" },
+        { title: "Episode 1 · Dana's client report", desc: "Ten things come up before Monday's client meeting. Another short game in your browser.", href: "../ep1/play.html", cta: "Play" },
+        { tbc: true, title: "To be continued…", desc: "A real AI workflow on your own machine, with your own Claude Code or Codex. We're inviting a few players to try it privately.", href: "../challenge/", cta: "Apply for the trial" },
+      ],
+    },
+  },
+  zh: {
+    brand: "是哪一个？",
+    due: "替 Dana 顶班",
+    days: ["周一", "周二", "周三", "周四", "周五", "下周一"],
+    kicker: "一个小游戏 · 选一个",
+    title: "是哪一个？",
+    setup: [
+      "Dana 出国度假一周，这一周她的客户由你来跟。",
+      "她在度假，你不想打扰她。走之前，她给你发了一份交接说明。",
+    ],
+    noteTitle: "Dana 的交接说明",
+    noteOpen: "这周辛苦你了。共享文件夹里同一样东西有好几个版本，每个是干什么的我都写在下面，有事看这份就行。",
+    noteHeads: ["报价", "合同", "启动会 PPT", "发票", "上手清单"],
+    noteExtra: [
+      ["会议纪要", "「周会纪要 最新.docx」其实停在二月，三月的在「周会纪要 3月.docx」。「客户会议纪要（草稿）.docx」不用管。"],
+      ["品牌素材", "logo 用「logo 2026.png」，「logo 最终.png」是旧的。「字体包.zip」装一次就行。"],
+      ["其他", "客户那边的对接人是 Lena，周三下午她不回邮件。报销单月底交给财务。"],
+    ],
+    sep: "",
+    how: "读一遍，开始以后它就收起来了。接下来五天，每天一个任务，选一个你会用的文件。",
+    count: (n) => `已发出 ${n} 份`,
+    listHead: "本周已发出",
+    rounds: [
+      { task: "客户今天要一份报价。", folder: "共享 / 报价", q: "你用哪个文件做报价？", after: "报价已发出。",
+        files: [["2026 报价单 最终版.xlsx", "1月15日 · Dana"], ["2026 报价单 的副本.xlsx", "3月5日 · Priya"], ["2026 报价单.xlsx", "3月3日 · Dana"], ["2026 报价单 v2（新）.xlsx", "2月20日 · Sam"]] },
+      { task: "客户同意了，你要把合同发过去。", folder: "共享 / 合同", q: "你发哪一份？", after: "合同已发出，等客户签字。",
+        files: [["客户合同 2026 最终版 v3.docx", "2月28日 · Sam"], ["客户合同 2026 - 征求意见稿.docx", "2月20日 · 法务"], ["客户合同 2026（Dana 批注）.docx", "2月2日 · Dana"], ["客户合同 2026.docx", "1月8日 · 法务"]] },
+      { task: "明天和客户开启动会。", folder: "共享 / PPT", q: "你在哪一份上改？", after: "启动会 PPT 已发给客户。",
+        files: [["启动会 v2 用这个.pptx", "2025年10月14日 · Sam"], ["启动会 新品牌.pptx", "2月10日 · 设计"], ["启动会.pptx", "2025年6月3日 · Dana"], ["启动会 新品牌（旧 logo）.pptx", "2月11日 · 设计"]] },
+      { task: "该给客户开第一张发票了。", folder: "共享 / 财务", q: "你用哪个模板？", after: "发票已发出。",
+        files: [["发票模板 最终版.xlsx", "2025年12月12日 · 财务"], ["发票 - Dana.xlsx", "3月1日 · Dana"], ["发票模板 - 新税率.xlsx", "3月6日 · Sam"], ["发票模板 2026 草稿.xlsx", "3月2日 · 财务"]] },
+      { task: "客户团队要一份上手清单。", folder: "共享 / 上手", q: "你发哪一份？", after: "清单已发给客户团队。",
+        files: [["客户上手清单.docx", "2025年9月22日 · Dana"], ["客户上手清单 - 3月.docx", "3月7日 · Priya"], ["客户上手清单 用这个.docx", "1月9日 · Dana"], ["上手清单 v2.docx", "2月18日 · Sam"]] },
+      { lead: "下周一，Dana 度假回来了，把长得像的旧版本都归档了。",
+        says: "“以后要用哪个文件，直接问我。”",
+        task: "客户又要一份报价。", q: "报价用哪个文件？", door: true,
+        after: "Dana：“2026 报价单.xlsx。”第二份报价已发出。", sends: "2026 报价单.xlsx",
+        files: [["问 Dana", ""]] },
+    ],
+    edited: "修改于",
+    dana: [
+      ["「2026 报价单 最终版.xlsx」是一月的，二月涨价以后就不用了。", "「2026 报价单 的副本.xlsx」是 Priya 算折扣用的，别发给客户。", "报价用「2026 报价单.xlsx」，我一直在这个文件上改。", "「2026 报价单 v2（新）.xlsx」是 Sam 的提案，没批。"],
+      ["「客户合同 2026 最终版 v3.docx」是 Sam 给另一个客户改的。", "「客户合同 2026 - 征求意见稿.docx」是法务的新版草稿，还没启用。", "「客户合同 2026（Dana 批注）.docx」是我的批注稿，没给法务看过。", "合同用法务发的「客户合同 2026.docx」。"],
+      ["「启动会 v2 用这个.pptx」是改版前的，别看名字。", "启动会用「启动会 新品牌.pptx」。", "「启动会.pptx」是去年的原版。", "「启动会 新品牌（旧 logo）.pptx」是设计留的对照稿。"],
+      ["发票用「发票模板 最终版.xlsx」，财务按今年的税率定的稿。", "「发票 - Dana.xlsx」是我给别的客户填过的。", "「发票模板 - 新税率.xlsx」是 Sam 猜的税率调整，其实没调。", "「发票模板 2026 草稿.xlsx」是财务的新格式，4 月才启用。"],
+      ["「客户上手清单.docx」是去年的。", "给客户的用 Priya 重写的「客户上手清单 - 3月.docx」。", "「客户上手清单 用这个.docx」是我一月写的，后来 Priya 重写了。", "「上手清单 v2.docx」是 Sam 给新员工用的。"],
+    ],
+    tasksShort: ["报价", "合同", "启动会 PPT", "发票", "上手清单"],
+    walkTitle: "交接说明里写的",
+    walkIntro: "每一题的答案，都在你周一之前读过的那份说明里。下面是说明里写着该用哪个的那一句；如果你发的是别的，也附上说明里对它的那一句。",
+    tagSent: "你发的", tagMeant: "该用的", tagBoth: "你发的就是该用的",
+    danaSays: "度假回来的 Dana",
+    walkEnd: "“每个文件我都写了，还是不够。所以我把多余的都归档了，以后直接问我。”",
+    head: (h) => `交接说明里每一题都写了用哪个。你选中了 ${h} 次。`,
+    verdict: (h) => (h === 5 ? "五个全中，整份说明你都记住了。" : h === 0 ? "一次都没中，可说明里每一题都写了。你并不孤单。" : "说明里每一题都写了。等 Dana 回来，只剩一个入口，你就不可能选错了。"),
+    friday: "Dana 回来以后，同样是报价，直接问她就行，谁都不会选错。",
+    cmpA: "周一到周五 · 一份说明，四个长得很像的文件", cmpB: "Dana 回来以后 · 问 Dana",
+    statHits: "照说明选中", statOdds: "每五行留下四行，五题全对", oddsVal: "33%", statUnknown: "未作答",
+    rightTitle: "你刚才做的，就是 agent 做的事",
+    right: "agent 做长任务时会不断压缩上下文：前面的内容被总结，给新内容腾地方。你可以一开始就明确告诉它用哪个 skill、哪个文件，可任务上下文积得太多以后，这句话就可能在压缩里丢掉。等它走到一堆长得很像的文件面前，就只能猜。你刚才做的就是这件事：Dana 的说明是那条指令，这一周的任务一件件压在它上面，你记住的只是压缩过的版本。记忆一模糊，你就按名字挑，而没有哪一条按名字挑的经验能灵两次以上。挑「最终版」，发票对了，报价错了。挑最新改的，清单对了，合同错了。挑「新品牌」，PPT 对了；挑「用这个」，两次都错。挑 Dana 自己改的，报价对了，清单错了。",
+    ruleTitle: "同一件事有好几个入口时",
+    rule: "告诉 agent 该用哪个，撑不过一个长任务：上下文一压缩，这句话就可能没了。少几扇门才管用。留一个知道每个文件是干什么的入口，所有任务都从这里进，长得像的都归档。",
+    fair: "这些文件单独看都没错，每一个都曾经是某个人在某个时候要用的那一个。可它们放在一起，每个任务都变成了考“还剩下什么”，而且错误会累积：就算每五行留下四行，五题全对也只有三分之一左右。",
+    realTitle: "Entrance 漂移：告诉过它走哪扇门，最后还是在猜",
+    realStory: [
+      "这一局里，每个文件都打得开，每个任务都做完了，没有任何东西拦你，也没有任何东西藏起来：每一题该用哪个，说明里都写了。漂移出在挑的那一下：指令在最前面，这一周的事一件件压上去，走到一堆长得很像的文件面前，你就开始猜。",
+      "这个游戏背后的真实案例是一个 AI agent 工作流。它越做越大，skill 文件夹里堆满了各个版本：到 2026 年 6 月一共有 12 个 skill，其中四个几乎同名：hn-demo、hn-demo-before-work、hn-demo-during-work、hn-demo-after-work。每一个都写了什么时候该用它，也常常明确告诉 agent 用哪一个。可任务一长，agent 为了继续干活会压缩上下文，那句指令不一定留得下来。面对四个长得很像的 skill，它就猜，常常猜错。",
+      "办法不是把指令再说一遍，也不是把说明写得更长。6 月 26 日，这 12 个全部归档，只留下一个入口：一个 onboarding skill，读懂请求以后再把它带到下一步。只有一扇门，上下文怎么压缩，都没有可猜的。就像回来以后的 Dana。",
+      '想亲手把一个漂了的 agent 拉回来？<a href="../challenge/">看看内测，申请试玩</a>。',
+    ],
+    playAgain: "再玩一次",
+    end: {
+      nextTitle: "接下来",
+      next: [
+        { title: "第二集 · 检查 4.2", desc: "七封一字不差的拒信，六份言之凿凿的资料。又一个浏览器小游戏。", href: "../ep2/play.html", cta: "开始玩" },
+        { title: "第一集 · Dana 的客户汇报", desc: "周一客户会之前，冒出来十件事。又一个浏览器小游戏。", href: "../ep1/play.html", cta: "开始玩" },
+        { tbc: true, title: "To be continued…", desc: "在你自己的电脑上跑一个真实的 AI 工作流，用你自己的 Claude Code 或 Codex。我们正邀请几位玩家私下试玩。", href: "../challenge/", cta: "申请内测" },
+      ],
+    },
+  },
+};
+
+const LETTERS = "abcd";
+function hits(answers) { return KEY.slice(0, SCORED).filter((k, i) => answers[i] === k).length; }
+// What went out for task i: the file picked, or for the last task's "Ask Dana", the file she handed over.
+function fileName(t, i, a) { const r = t.rounds[i], k = LETTERS.indexOf(a); return k >= 0 && r.files[k] ? r.sends || r.files[k][0] : null; }
+
+const UI = {
+  en: {
+    rules: "One task at a time, each on a clock. You'll see all six; if time runs out, that task is marked as no answer. Dana's note folds away when you start.",
+    skip: "Skip to the results", skipHead: "You skipped to the results.",
+    skipNote: "Every task is marked as no answer. The files Dana meant are below.",
+    begin: "Start", reading: "Folds away in", decide: "Time left", untimed: "Play without a timer",
+    folded: "Dana's note is put away. Keep going.", timedOut: "Time ran out. No answer.", unknown: "no answer",
+    timeoutNote: (list) => `No answer at ${list}.`,
+  },
+  zh: {
+    rules: "一次一个任务，每个任务限时。六个任务都会出现；时间到了，这一题就记作未作答。开始以后，Dana 留的话会收起来。",
+    skip: "直接看结果", skipHead: "你直接看了结果。",
+    skipNote: "每个任务都记作未作答。Dana 指的是哪些文件，在下面。",
+    begin: "开始", reading: "收起还有", decide: "剩余", untimed: "不限时玩",
+    folded: "Dana 留的话已经收起。继续。", timedOut: "时间到了，没有作答。", unknown: "未作答",
+    timeoutNote: (list) => `第 ${list} 题未作答。`,
+  },
+};
+const LANG = () => (document.documentElement.lang.startsWith("zh") ? "zh" : "en");
+
+// Dana's handover note: what every file is for, folder by folder, plus a few folders no task needs.
+function noteSections(t) {
+  const all = t.noteHeads.map((h, i) => [h, NOTE_ORDER[i].map((j) => t.dana[i][j]).join(t.sep)]).concat(t.noteExtra);
+  return NOTE_SEQ.map((k) => all[k]);
+}
+function handover(t, reveal) {
+  const secs = noteSections(t).map(([h, p]) => `<div class="sec"><h5>${h}</h5><p>${p}</p></div>`).join("");
+  return `<div class="paper handover"${reveal ? " data-reveal" : ""}><div class="src">${t.noteTitle}</div><p class="open">${t.noteOpen}</p>${secs}</div>`;
+}
+// What you've sent this week: one line per task you picked a file for.
+function sentList(t, s, upTo) {
+  const items = [];
+  for (let k = 0; k <= upTo; k++) { const f = fileName(t, k, s.answers[k]); if (f) items.push(`<li><span>${f}</span></li>`); }
+  return `<div class="paper checklist"><div class="head"><span>${t.listHead}</span><span class="n">${items.length}</span></div><ul>${items.join("")}</ul></div>`;
+}
+function sentCount(answers) { return answers.filter((a) => LETTERS.includes(a)).length; }
+
+DriftGame({
+  T, UI,
+  introText: (t) => [t.setup.join(" "), t.noteTitle, t.noteOpen, ...noteSections(t).flat(), t.how].join(" "),
+  intro: (t) => `<section class="intro">
+    <div class="kicker">${t.kicker}</div>
+    <h1>${t.title}</h1>
+    <div class="setup">${t.setup.map((p) => `<p data-type>${p}</p>`).join("")}</div>
+    ${handover(t, true)}
+    <p class="how" data-type>${t.how}</p>
+  </section>`,
+  roundText: (t, i) => { const r = t.rounds[i]; return [r.lead || "", r.says || "", r.task, r.folder || "", r.files.map((f) => f.join(" ")).join(" "), r.q].join(" "); },
+  round: (t, i) => {
+    const r = t.rounds[i];
+    return `<div class="round-head"><span class="num">#${i + 1}</span><span class="time">${t.days[i]}</span></div>
+      ${r.lead ? `<p class="event">${r.lead}</p>` : ""}
+      ${r.says ? `<div class="paper note-card"><div class="src">Dana</div><p class="said">${r.says}</p></div>` : ""}
+      <p class="event">${r.task}</p>
+      <p class="q">${r.q}</p>
+      ${r.folder ? `<p class="folder">${r.folder}</p>` : ""}`;
+  },
+  choices: (t, i) => t.rounds[i].files.map(([name, meta]) => `<span class="fname">${name}</span>${t.rounds[i].door ? (meta ? `<span class="meta">${meta}</span>` : "") : `<span class="meta">${t.edited} ${meta}</span>`}`),
+  after: (t, i, s) => `<p><strong>${t.days[i]}</strong> · ${t.rounds[i].after}</p>${sentList(t, s, i)}`,
+  past: (t, k, s) => `#${k + 1} · ${t.days[k]} · ${fileName(t, k, s.answers[k]) || UI[LANG()].unknown}`,
+  done: (answers) => answers.length === N,
+  bar: (t, s) => {
+    const q = s.phase === "play" ? s.answers.length : s.phase === "intro" ? 0 : N - 1;
+    return { due: t.due, clock: t.days[Math.min(q, N - 1)], count: t.count(sentCount(s.answers)) };
+  },
+  reveal: (t, s) => {
+    const lang = LANG(), h = hits(s.answers), U = UI[lang];
+    const unknown = s.answers.filter((a) => a === "U").length;
+    const late = s.answers.map((a, i) => (a === "U" ? i + 1 : 0)).filter(Boolean);
+    // What the note said: the line naming the file to use, and the line about the file you sent, if different.
+    const cards = t.tasksShort.map((name, i) => {
+      const k = LETTERS.indexOf(s.answers[i]), right = LETTERS.indexOf(KEY[i]);
+      const line = (j, cls, tag) => `<li class="${cls}"><span class="tag">${tag}</span><p class="said">${t.dana[i][j]}</p></li>`;
+      const rows = line(right, k === right ? "meant mine" : "meant", k === right ? t.tagBoth : t.tagMeant) + (k >= 0 && k !== right ? line(k, "mine", t.tagSent) : "");
+      return `<div class="paper task"><h4>#${i + 1} · ${t.days[i]} · ${name}</h4><ul class="walk">${rows}</ul></div>`;
+    }).join("");
+    return `<section class="reveal${s.justAdded === "end" ? " new" : ""}" id="reveal">
+      <h2>${s.skipped ? U.skipHead : t.head(h)}</h2>
+      <p>${s.skipped ? U.skipNote : t.verdict(h)}</p>
+      ${late.length && !s.skipped ? `<p>${U.timeoutNote(lang === "zh" ? late.join("、") : "#" + late.join(", #"))}</p>` : ""}
+      <div class="stats">
+        <div class="stat"><span class="lbl">${t.statHits}</span><span class="val">${h} / 5</span></div>
+        <div class="stat"><span class="lbl">${t.statOdds}</span><span class="val">${t.oddsVal}</span></div>
+        <div class="stat"><span class="lbl">${t.statUnknown}</span><span class="val">${unknown}</span></div>
+      </div>
+      <div class="right"><h3>${t.walkTitle}</h3><p>${t.walkIntro}</p></div>
+      <div class="tasks">${cards}</div>
+      <div class="paper note-card"><div class="src">${t.danaSays}</div><p class="said">${t.walkEnd}</p></div>
+      <p><strong>${t.friday}</strong></p>
+      <div class="compare">
+        <div class="paper"><span class="lbl">${t.cmpA}</span><span class="big">${h} / 5</span></div>
+        <div class="paper"><span class="lbl">${t.cmpB}</span><span class="big">${s.answers[5] === "a" ? "1 / 1" : "– / 1"}</span></div>
+      </div>
+      <div class="right"><h3>${t.rightTitle}</h3><p>${t.right}</p></div>
+      <div class="paper rule-box"><h3>${t.ruleTitle}</h3><p>${t.rule}</p></div>
+      <p>${t.fair}</p>
+      <div class="right" id="real-case"><h3>${t.realTitle}</h3>${t.realStory.map((p) => `<p>${p}</p>`).join("")}</div>
+      ${window.DriftEnd.render(t.end)}
+    </section>`;
+  },
+});
+</script>
+
+</body></html>

@@ -207,3 +207,22 @@ details ul, .reveal ul { margin: 8px 0 0; padding-left: 20px; display: grid; gap
 .after.last { margin-top: 14px; }
 .timeout { margin: 0; text-align: center; color: var(--gold); font-size: 14px; }
 .timeout.last { margin-top: 14px; text-align: left; }
+
+/* How other players answered (assets/game-stats.js). Empty until there's data. */
+.crowd { display: grid; gap: 12px; }
+.crowd:empty { display: none; }
+.crowd-chart { display: grid; gap: 6px; }
+.crowd-row { display: grid; grid-template-columns: 52px minmax(0, 1fr) 74px; gap: 10px; align-items: center; font-size: 14px; color: var(--muted); font-variant-numeric: lining-nums tabular-nums; }
+.crowd-row .crowd-bar { height: 10px; border-radius: 5px; background: var(--line); overflow: hidden; }
+.crowd-row .crowd-bar i { display: block; height: 100%; background: var(--cyan); border-radius: 5px; }
+.crowd-row.mine { color: var(--gold); font-weight: 600; }
+.crowd-row.mine .crowd-bar i { background: var(--gold); }
+.crowd-note, .stats-notice { margin: 0; font-size: 13px; color: var(--faint); }
+
+/* Choice rounds (g.choices): one button per option, stacked, read like file cards. */
+.answers.choices { display: grid; gap: 8px; justify-content: stretch; max-width: 620px; width: 100%; margin: 0 auto; }
+.answers.choices button.choice { display: grid; gap: 3px; text-align: left; padding: 12px 16px; min-width: 0; border-radius: 10px; font: inherit; letter-spacing: 0; text-transform: none; }
+.answers.choices .fname { font-family: var(--sans); font-size: 16px; font-weight: 600; overflow-wrap: anywhere; }
+.answers.choices .meta { font-size: 13px; color: var(--faint); }
+.answers.choices button.chosen .meta { color: var(--bg); }
+@media (max-width: 600px) { .answers.choices button.choice { flex: none; } }
